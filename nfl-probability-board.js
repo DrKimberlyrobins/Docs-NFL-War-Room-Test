@@ -1,303 +1,415 @@
 
 /*
- DOC'S NFL WAR ROOM — PROBABILITY COMPARISON V1
- Saved October 18, 2026 comparison snapshot.
+ DOC'S NFL WAR ROOM
+ ALL-MATCHUP PROBABILITY BOARD V2
 
- IMPORTANT:
- - Model numbers are provisional approximations.
- - Sportsbook probabilities are from saved prices,
-   not live odds.
- - These are NOT validated betting signals.
- - No existing War Room functions are overwritten.
+ - Works with every matchup in the War Room selectors
+ - Preserves the seven existing provisional snapshots
+ - Shows missing calculations honestly
+ - Does not modify existing War Room calculations
+ - Does not invent model probabilities or sportsbook prices
 */
 
 (() => {
   "use strict";
 
-  const games = [
-    {
-      away: "Tennessee Titans",
-      home: "Indianapolis Colts",
-      pick: "Indianapolis Colts",
-      model: 69.1,
-      market: 73.3
-    },
-    {
-      away: "Carolina Panthers",
-      home: "Philadelphia Eagles",
-      pick: "Carolina Panthers",
-      model: 75.8,
-      market: 60.6
-    },
-    {
-      away: "Pittsburgh Steelers",
-      home: "Tampa Bay Buccaneers",
-      pick: "Pittsburgh Steelers",
-      model: 52.8,
-      market: 56.8
-    },
-    {
-      away: "Baltimore Ravens",
-      home: "Cleveland Browns",
-      pick: "Baltimore Ravens",
-      model: 69.6,
-      market: 61.0
-    },
-    {
-      away: "New Orleans Saints",
-      home: "New York Giants",
-      pick: "New York Giants",
-      model: 54.3,
-      market: 49.4
-    },
-    {
-      away: "Chicago Bears",
-      home: "Atlanta Falcons",
-      pick: "Chicago Bears",
-      model: 50.4,
-      market: 51.7
-    },
-    {
-      away: "New York Jets",
-      home: "New England Patriots",
-      pick: "New England Patriots",
-      model: 60.8,
-      market: 75.3
-    }
+  const snapshots = [
+    ["TEN", "IND", "IND", 69.1, 73.3],
+    ["CAR", "PHI", "CAR", 75.8, 60.6],
+    ["PIT", "TB",  "PIT", 52.8, 56.8],
+    ["BAL", "CLE", "BAL", 69.6, 61.0],
+    ["NO",  "NYG", "NYG", 54.3, 49.4],
+    ["CHI", "ATL", "CHI", 50.4, 51.7],
+    ["NYJ", "NE",  "NE",  60.8, 75.3]
   ];
 
-  function make(tag, text, styles = {}) {
-    const el = document.createElement(tag);
-    if (text !== undefined) el.textContent = text;
-    Object.assign(el.style, styles);
-    return el;
+  const names = {
+    ARI: "Arizona Cardinals",
+    ATL: "Atlanta Falcons",
+    BAL: "Baltimore Ravens",
+    BUF: "Buffalo Bills",
+    CAR: "Carolina Panthers",
+    CHI: "Chicago Bears",
+    CIN: "Cincinnati Bengals",
+    CLE: "Cleveland Browns",
+    DAL: "Dallas Cowboys",
+    DEN: "Denver Broncos",
+    DET: "Detroit Lions",
+    GB: "Green Bay Packers",
+    HOU: "Houston Texans",
+    IND: "Indianapolis Colts",
+    JAC: "Jacksonville Jaguars",
+    KC: "Kansas City Chiefs",
+    LV: "Las Vegas Raiders",
+    LAC: "Los Angeles Chargers",
+    LAR: "Los Angeles Rams",
+    MIA: "Miami Dolphins",
+    MIN: "Minnesota Vikings",
+    NE: "New England Patriots",
+    NO: "New Orleans Saints",
+    NYG: "New York Giants",
+    NYJ: "New York Jets",
+    PHI: "Philadelphia Eagles",
+    PIT: "Pittsburgh Steelers",
+    SF: "San Francisco 49ers",
+    SEA: "Seattle Seahawks",
+    TB: "Tampa Bay Buccaneers",
+    TEN: "Tennessee Titans",
+    WAS: "Washington Commanders"
+  };
+
+  const aliases = {
+    LA: "LAR",
+    STL: "LAR",
+    SD: "LAC",
+    OAK: "LV",
+    WSH: "WAS",
+    JAX: "JAC",
+    ARZ: "ARI"
+  };
+
+  function teamCode(raw) {
+    const value = String(raw || "").trim().toLowerCase();
+    const normalized = value.replace(/[^a-z0-9]/g, "");
+
+    for (const [code, name] of Object.entries(names)) {
+      if (normalized === code.toLowerCase() ||
+          normalized === name.toLowerCase().replace(/[^a-z0-9]/g, "")) {
+        return code;
+      }
+    }
+
+    for (const [alias, code] of Object.entries(aliases)) {
+      if (normalized === alias.toLowerCase()) return code;
+    }
+
+    const matches = {
+      cardinals: "ARI", falcons: "ATL", ravens: "BAL",
+      bills: "BUF", panthers: "CAR", bears: "CHI",
+      bengals: "CIN", browns: "CLE", cowboys: "DAL",
+      broncos: "DEN", lions: "DET", packers: "GB",
+      texans: "HOU", colts: "IND", jaguars: "JAC",
+      chiefs: "KC", raiders: "LV", chargers: "LAC",
+      rams: "LAR", dolphins: "MIA", vikings: "MIN",
+      patriots: "NE", saints: "NO", giants: "NYG",
+      jets: "NYJ", eagles: "PHI", steelers: "PIT",
+      "49ers": "SF", seahawks: "SEA", buccaneers: "TB",
+      titans: "TEN", commanders: "WAS"
+    };
+
+    for (const [word, code] of Object.entries(matches)) {
+      if (normalized.includes(word)) return code;
+    }
+
+    return null;
   }
 
-  function percentageBar(value, color) {
-    const track = make("div", undefined, {
-      height: "12px",
-      background: "#294158",
-      borderRadius: "20px",
-      overflow: "hidden",
-      margin: "8px 0 16px"
-    });
+  function selectedCode(select) {
+    if (!select) return null;
+    const option = select.selectedOptions?.[0];
 
-    const fill = make("div", undefined, {
-      height: "100%",
-      width: value + "%",
-      background: color,
-      borderRadius: "20px"
-    });
-
-    track.appendChild(fill);
-    return track;
+    return (
+      teamCode(select.value) ||
+      teamCode(option?.textContent)
+    );
   }
 
-  function line(label, value, color) {
-    const wrapper = make("div");
-    const top = make("div", undefined, {
-      display: "flex",
-      justifyContent: "space-between",
-      gap: "10px",
-      flexWrap: "wrap"
+  function element(tag, text, style = {}) {
+    const node = document.createElement(tag);
+    if (text !== undefined) node.textContent = text;
+    Object.assign(node.style, style);
+    return node;
+  }
+
+  function metric(label, value, color) {
+    const block = element("div", undefined, {
+      flex: "1 1 180px",
+      padding: "15px",
+      background: "#20384f",
+      borderRadius: "10px",
+      minWidth: "0"
     });
 
-    top.appendChild(make("strong", label));
-    top.appendChild(make("strong", value.toFixed(1) + "%", {
-      color: color,
-      fontSize: "20px"
+    block.appendChild(element("div", label, {
+      fontSize: "13px",
+      color: "#c1d2e2",
+      marginBottom: "8px"
     }));
 
-    wrapper.appendChild(top);
-    wrapper.appendChild(percentageBar(value, color));
-    return wrapper;
+    block.appendChild(element("div", value, {
+      fontSize: "29px",
+      fontWeight: "bold",
+      color: color
+    }));
+
+    return block;
+  }
+
+  function findSnapshot(away, home) {
+    return snapshots.find(
+      row => row[0] === away && row[1] === home
+    ) || null;
   }
 
   function render() {
-    const panel = document.getElementById("docProbabilityPanel");
-    if (!panel) return;
-
-    const away = document.getElementById("away")?.value;
-    const home = document.getElementById("home")?.value;
+    const awaySelect = document.getElementById("away");
+    const homeSelect = document.getElementById("home");
     const output = document.getElementById("docProbabilityOutput");
 
-    if (!output) return;
+    if (!awaySelect || !homeSelect || !output) return;
+
+    const away = selectedCode(awaySelect);
+    const home = selectedCode(homeSelect);
+
     output.replaceChildren();
 
-    const game = games.find(
-      g => g.away === away && g.home === home
-    );
-
-    if (!game) {
-      output.appendChild(make(
+    if (!away || !home || away === home) {
+      output.appendChild(element(
         "p",
-        "No saved probability snapshot for this matchup. " +
-        "We will calculate this game when the trained model " +
-        "is connected."
+        "Select two different NFL teams to view their probability comparison."
       ));
       return;
     }
 
-    const marketPick = game.market > 50
-      ? game.pick
-      : (game.pick === game.home ? game.away : game.home);
-
-    const agree = marketPick === game.pick;
-    const difference = game.model - game.market;
-
-    output.appendChild(make("h3", game.away + " @ " + game.home, {
-      color: "#ffffff",
-      marginTop: "8px"
-    }));
-
-    output.appendChild(make(
-      "p",
-      "Original model favors: " + game.pick,
-      { color: "#b9d0e3" }
+    output.appendChild(element(
+      "h3",
+      `${names[away]} @ ${names[home]}`,
+      { color: "#ffffff", marginBottom: "16px" }
     ));
 
-    output.appendChild(line(
-      "Original Model V2 — " + game.pick,
-      game.model,
-      "#35df93"
-    ));
+    const saved = findSnapshot(away, home);
 
-    output.appendChild(line(
-      "Sportsbook no-vig — " + game.pick,
-      game.market,
-      "#7ebcff"
-    ));
-
-    const status = make(
-      "div",
-      agree
-        ? "AGREEMENT — Both favor " + game.pick
-        : "DISAGREEMENT — Market favors " + marketPick,
-      {
-        padding: "12px",
-        borderRadius: "8px",
-        background: agree ? "#163e35" : "#503e20",
-        color: agree ? "#8affc3" : "#ffda89",
-        fontWeight: "bold",
-        marginBottom: "12px"
-      }
-    );
-
-    output.appendChild(status);
-
-    const gap = make(
-      "p",
-      "Probability difference for " + game.pick + ": " +
-      (difference >= 0 ? "+" : "") +
-      difference.toFixed(1) + " percentage points"
-    );
-
-    output.appendChild(gap);
-
-    const table = make("table");
-    const head = make("tr");
-
-    ["Team", "Our V2", "Sportsbook"].forEach(text => {
-      head.appendChild(make("th", text));
+    const row = element("div", undefined, {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "12px",
+      marginBottom: "14px"
     });
 
-    table.appendChild(head);
+    if (!saved) {
+      row.appendChild(metric(
+        "Original Model V2",
+        "Not calculated",
+        "#ffffff"
+      ));
 
-    [game.pick, game.pick === game.home ? game.away : game.home]
-      .forEach((team, index) => {
-        const tr = make("tr");
-        const model = index === 0 ? game.model : 100 - game.model;
-        const market = index === 0 ? game.market : 100 - game.market;
+      row.appendChild(metric(
+        "Sportsbook No-Vig",
+        "Not available",
+        "#ffffff"
+      ));
 
-        [
-          team,
-          model.toFixed(1) + "%",
-          market.toFixed(1) + "%"
-        ].forEach(value => {
-          tr.appendChild(make("td", value));
-        });
+      row.appendChild(metric(
+        "Improved Model V3",
+        "Not trained",
+        "#ffffff"
+      ));
 
-        table.appendChild(tr);
-      });
+      output.appendChild(row);
 
-    const wrap = make("div", undefined, {
-      overflowX: "auto"
-    });
+      output.appendChild(element(
+        "div",
+        "MATCHUP READY — Waiting for model and market data",
+        {
+          padding: "12px",
+          background: "#493d20",
+          color: "#ffe2a0",
+          borderRadius: "8px",
+          fontWeight: "bold"
+        }
+      ));
 
-    wrap.appendChild(table);
-    output.appendChild(wrap);
+      output.appendChild(element(
+        "p",
+        "This matchup is recognized. We have not yet generated " +
+        "an exact trained-model prediction or imported a " +
+        "verified sportsbook price for it.",
+        { lineHeight: "1.6" }
+      ));
 
-    const footer = make(
-      "p",
-      "MODEL STATUS: PROVISIONAL. " +
-      "V2 uses an approximate input snapshot, not exact " +
-      "2026 game-level features. Market values are saved " +
-      "historical snapshots, not live quotes. " +
-      "Agreement does not establish betting value.",
-      {
-        fontSize: "12px",
-        color: "#b9c0cc",
-        lineHeight: "1.6",
-        marginTop: "15px"
-      }
-    );
-
-    output.appendChild(footer);
-  }
-
-  function init() {
-    const matchupPanel = document.getElementById("away")?.closest(".panel");
-
-    if (!matchupPanel) {
-      console.error("Probability board: matchup panel not found");
       return;
     }
 
-    if (document.getElementById("docProbabilityPanel")) return;
+    const favored = saved[2];
+    const model = saved[3];
+    const market = saved[4];
 
-    const panel = make("div", undefined, {
+    const modelFavorite = model > 50
+      ? favored
+      : favored === away ? home : away;
+
+    const marketFavorite = market > 50
+      ? favored
+      : favored === away ? home : away;
+
+    const agreement = modelFavorite === marketFavorite;
+
+    row.appendChild(metric(
+      "Original V2 — " + names[favored],
+      model.toFixed(1) + "%",
+      "#54e8a5"
+    ));
+
+    row.appendChild(metric(
+      "Sportsbook — " + names[favored],
+      market.toFixed(1) + "%",
+      "#8cc5ff"
+    ));
+
+    row.appendChild(metric(
+      "Improved Model V3",
+      "Not trained",
+      "#ffffff"
+    ));
+
+    output.appendChild(row);
+
+    output.appendChild(element(
+      "div",
+      agreement
+        ? "AGREEMENT — Both favor " + names[modelFavorite]
+        : "DISAGREEMENT — Model favors " +
+          names[modelFavorite] +
+          "; market favors " + names[marketFavorite],
+      {
+        padding: "12px",
+        background: agreement ? "#174536" : "#53401d",
+        color: agreement ? "#93ffd0" : "#ffe09a",
+        borderRadius: "8px",
+        fontWeight: "bold",
+        marginBottom: "14px"
+      }
+    ));
+
+    const table = element("table");
+    table.style.width = "100%";
+    table.style.borderCollapse = "collapse";
+
+    const header = element("tr");
+
+    ["Team", "Model V2", "Sportsbook"].forEach(label => {
+      const th = element("th", label, {
+        padding: "10px",
+        borderBottom: "1px solid #4d6579",
+        textAlign: "left"
+      });
+      header.appendChild(th);
+    });
+
+    table.appendChild(header);
+
+    [away, home].forEach(code => {
+      const isFavored = code === favored;
+
+      const tr = element("tr");
+      const values = [
+        names[code],
+        (isFavored ? model : 100 - model).toFixed(1) + "%",
+        (isFavored ? market : 100 - market).toFixed(1) + "%"
+      ];
+
+      values.forEach(value => {
+        tr.appendChild(element("td", value, {
+          padding: "10px",
+          borderBottom: "1px solid #344d62"
+        }));
+      });
+
+      table.appendChild(tr);
+    });
+
+    const wrapper = element("div", undefined, {
+      overflowX: "auto"
+    });
+
+    wrapper.appendChild(table);
+    output.appendChild(wrapper);
+
+    output.appendChild(element(
+      "p",
+      "Difference for " + names[favored] + ": " +
+      (model - market >= 0 ? "+" : "") +
+      (model - market).toFixed(1) +
+      " percentage points.",
+      { fontWeight: "bold" }
+    ));
+
+    output.appendChild(element(
+      "p",
+      "PROVISIONAL SNAPSHOT ONLY: Model percentages use " +
+      "approximate 2026 inputs. Sportsbook percentages are " +
+      "from saved prices, not live odds. No betting edge " +
+      "has been verified.",
+      {
+        color: "#c5d0da",
+        fontSize: "12px",
+        lineHeight: "1.6"
+      }
+    ));
+  }
+
+  function init() {
+    const away = document.getElementById("away");
+    const home = document.getElementById("home");
+
+    if (!away || !home) {
+      console.warn(
+        "Probability board: away/home selectors not found."
+      );
+      return;
+    }
+
+    if (document.getElementById("docProbabilityPanel")) {
+      render();
+      return;
+    }
+
+    const panel = element("section", undefined, {
       background: "#13263c",
       border: "2px solid #35df93",
       borderRadius: "12px",
       padding: "20px",
       margin: "20px 0",
-      color: "white"
+      color: "#ffffff"
     });
 
     panel.id = "docProbabilityPanel";
 
-    panel.appendChild(make(
+    panel.appendChild(element(
       "h2",
-      "WAR ROOM — WIN PROBABILITY INTELLIGENCE",
-      {
-        color: "#35df93",
-        marginTop: "0"
-      }
+      "WAR ROOM — ALL GAME PROBABILITY INTELLIGENCE",
+      { color: "#35df93", marginTop: "0" }
     ));
 
-    panel.appendChild(make(
+    panel.appendChild(element(
       "p",
-      "Original model vs. sportsbook market — " +
-      "October 18 saved comparison.",
-      { color: "#b9d0e3" }
+      "Every NFL matchup • Original V2 vs. sportsbook • " +
+      "Future V3 comparison",
+      { color: "#c1d2e2" }
     ));
 
-    const output = make("div");
+    const output = element("div");
     output.id = "docProbabilityOutput";
     panel.appendChild(output);
 
-    matchupPanel.insertAdjacentElement("afterend", panel);
+    const parentPanel = away.closest(".panel") ||
+      away.parentElement?.parentElement;
 
-    document.getElementById("away")
-      .addEventListener("change", render);
-
-    document.getElementById("home")
-      .addEventListener("change", render);
-
-    const analyzeButton = matchupPanel.querySelector("button");
-    if (analyzeButton) {
-      analyzeButton.addEventListener("click", render);
+    if (parentPanel) {
+      parentPanel.insertAdjacentElement("afterend", panel);
+    } else {
+      document.body.prepend(panel);
     }
+
+    away.addEventListener("change", render);
+    home.addEventListener("change", render);
+
+    // Refresh after existing War Room actions.
+    document.addEventListener("click", event => {
+      if (event.target.closest("button")) {
+        setTimeout(render, 0);
+      }
+    });
 
     render();
   }
