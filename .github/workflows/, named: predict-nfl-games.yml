@@ -1,0 +1,71 @@
+
+name: Predict NFL Games V2
+
+on:
+  workflow_dispatch:
+    inputs:
+      from_date:
+        description: "First game date (YYYY-MM-DD)"
+        required: true
+        default: "2026-10-18"
+      days:
+        description: "Number of days to include"
+        required: true
+        default: "8"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  predict-games:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout TEST repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install required packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install nflreadpy pandas pyarrow numpy scikit-learn joblib
+
+      - name: Download existing trained V2 model
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p model-output
+
+          gh run download 39142474065 \
+            --repo "${{ github.repository }}" \
+            --name nfl-trained-model-and-results \
+            --dir model-output
+
+          find model-output -type f
+
+          if [ ! -f model-output/nfl_win_model.joblib ]; then
+            echo "ERROR: Trained model file not found."
+            exit 1
+          fi
+
+      - name: Generate 2026 matchup probabilities
+        env:
+          FROM_DATE: ${{ inputs.from_date }}
+          DAYS: ${{ inputs.days }}
+        run: |
+          python predict_nfl_games.py \
+            --from-date "$FROM_DATE" \
+            --days "$DAYS"
+
+      - name: Upload probability results
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-game-probabilities-2026
+          path: nfl-game-probabilities-2026.json
+          retention-days: 90
+          if-no-files-found: error
