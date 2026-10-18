@@ -1,0 +1,36 @@
+
+name: Build NFL Historical Dataset
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install nflreadpy polars
+
+      - name: Download and validate history
+        run: python build_nfl_history.py
+
+      - name: Upload historical dataset
+        uses: actions/upload-artifact@v4
+        with:
+          name: nfl-history-2020-2025
+          path: historical/
+          retention-days: 30
