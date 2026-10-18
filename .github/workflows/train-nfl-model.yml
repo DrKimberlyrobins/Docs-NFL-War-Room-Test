@@ -39,6 +39,9 @@ jobs:
       - name: Train, calibrate, and test
         run: python train_nfl_model.py
 
+      - name: Audit calibration and sportsbook prices
+        run: python audit_nfl_market.py  
+
       - name: Upload model and test results
         uses: actions/upload-artifact@v4
         with:
