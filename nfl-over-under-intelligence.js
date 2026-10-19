@@ -21,8 +21,8 @@ function playerMatch(name,team){
  const matches=logs.players.filter(p=>getTeam(team)===p.team);
  const exact=matches.find(p=>norm(p.name)===norm(name)||norm(p.shortName)===norm(name));
  if(exact)return exact;
- const last=norm(name).replace(/^[a-z]{1,2}(?=[a-z]{4,})/,"");
- const candidates=matches.filter(p=>norm(p.name).endsWith(last)||norm(p.shortName).endsWith(last));
+ const surname=String(name).trim().split(/[.\\s]+/).pop();
+ const candidates=matches.filter(p=>norm(p.name).endsWith(norm(surname))||norm(p.shortName).endsWith(norm(surname)));
  return candidates.length===1?candidates[0]:null;
 }
 function marketGuess(raw){
