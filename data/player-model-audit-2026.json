@@ -1,0 +1,246 @@
+{
+  "season": 2026,
+  "note": "Walk-forward synthetic median thresholds; NOT sportsbook-line calibration or proof of profitable edge",
+  "markets": {
+    "passingYards": {
+      "predictions": 432,
+      "brier": 0.0412,
+      "bins": [
+        {
+          "range": "0.0-0.2",
+          "count": 413,
+          "meanForecast": 0.181,
+          "observedRate": 0.0
+        },
+        {
+          "range": "0.2-0.4",
+          "count": 2,
+          "meanForecast": 0.336,
+          "observedRate": 0.0
+        },
+        {
+          "range": "0.4-0.6",
+          "count": 15,
+          "meanForecast": 0.501,
+          "observedRate": 0.533
+        },
+        {
+          "range": "0.6-0.8",
+          "count": 2,
+          "meanForecast": 0.633,
+          "observedRate": 0.5
+        }
+      ]
+    },
+    "completions": {
+      "predictions": 432,
+      "brier": 0.0413,
+      "bins": [
+        {
+          "range": "0.0-0.2",
+          "count": 413,
+          "meanForecast": 0.181,
+          "observedRate": 0.0
+        },
+        {
+          "range": "0.2-0.4",
+          "count": 11,
+          "meanForecast": 0.325,
+          "observedRate": 0.273
+        },
+        {
+          "range": "0.4-0.6",
+          "count": 6,
+          "meanForecast": 0.488,
+          "observedRate": 0.833
+        },
+        {
+          "range": "0.6-0.8",
+          "count": 2,
+          "meanForecast": 0.641,
+          "observedRate": 0.0
+        }
+      ]
+    },
+    "attempts": {
+      "predictions": 432,
+      "brier": 0.0413,
+      "bins": [
+        {
+          "range": "0.0-0.2",
+          "count": 411,
+          "meanForecast": 0.181,
+          "observedRate": 0.0
+        },
+        {
+          "range": "0.2-0.4",
+          "count": 11,
+          "meanForecast": 0.292,
+          "observedRate": 0.273
+        },
+        {
+          "range": "0.4-0.6",
+          "count": 8,
+          "meanForecast": 0.504,
+          "observedRate": 0.375
+        },
+        {
+          "range": "0.6-0.8",
+          "count": 2,
+          "meanForecast": 0.646,
+          "observedRate": 1.0
+        }
+      ]
+    },
+    "rushingYards": {
+      "predictions": 432,
+      "brier": 0.0731,
+      "bins": [
+        {
+          "range": "0.0-0.2",
+          "count": 350,
+          "meanForecast": 0.18,
+          "observedRate": 0.006
+        },
+        {
+          "range": "0.2-0.4",
+          "count": 25,
+          "meanForecast": 0.318,
+          "observedRate": 0.08
+        },
+        {
+          "range": "0.4-0.6",
+          "count": 34,
+          "meanForecast": 0.519,
+          "observedRate": 0.353
+        },
+        {
+          "range": "0.6-0.8",
+          "count": 23,
+          "meanForecast": 0.642,
+          "observedRate": 0.391
+        }
+      ]
+    },
+    "carries": {
+      "predictions": 432,
+      "brier": 0.065,
+      "bins": [
+        {
+          "range": "0.0-0.2",
+          "count": 358,
+          "meanForecast": 0.18,
+          "observedRate": 0.011
+        },
+        {
+          "range": "0.2-0.4",
+          "count": 56,
+          "meanForecast": 0.291,
+          "observedRate": 0.232
+        },
+        {
+          "range": "0.4-0.6",
+          "count": 17,
+          "meanForecast": 0.5,
+          "observedRate": 0.647
+        },
+        {
+          "range": "0.6-0.8",
+          "count": 1,
+          "meanForecast": 0.666,
+          "observedRate": 0.0
+        }
+      ]
+    },
+    "receivingYards": {
+      "predictions": 432,
+      "brier": 0.1009,
+      "bins": [
+        {
+          "range": "0.0-0.2",
+          "count": 301,
+          "meanForecast": 0.181,
+          "observedRate": 0.0
+        },
+        {
+          "range": "0.2-0.4",
+          "count": 16,
+          "meanForecast": 0.332,
+          "observedRate": 0.375
+        },
+        {
+          "range": "0.4-0.6",
+          "count": 74,
+          "meanForecast": 0.499,
+          "observedRate": 0.257
+        },
+        {
+          "range": "0.6-0.8",
+          "count": 41,
+          "meanForecast": 0.641,
+          "observedRate": 0.488
+        }
+      ]
+    },
+    "receptions": {
+      "predictions": 432,
+      "brier": 0.094,
+      "bins": [
+        {
+          "range": "0.0-0.2",
+          "count": 325,
+          "meanForecast": 0.177,
+          "observedRate": 0.028
+        },
+        {
+          "range": "0.2-0.4",
+          "count": 72,
+          "meanForecast": 0.289,
+          "observedRate": 0.306
+        },
+        {
+          "range": "0.4-0.6",
+          "count": 34,
+          "meanForecast": 0.481,
+          "observedRate": 0.559
+        },
+        {
+          "range": "0.6-0.8",
+          "count": 1,
+          "meanForecast": 0.631,
+          "observedRate": 1.0
+        }
+      ]
+    },
+    "targets": {
+      "predictions": 432,
+      "brier": 0.0956,
+      "bins": [
+        {
+          "range": "0.0-0.2",
+          "count": 320,
+          "meanForecast": 0.178,
+          "observedRate": 0.013
+        },
+        {
+          "range": "0.2-0.4",
+          "count": 70,
+          "meanForecast": 0.307,
+          "observedRate": 0.414
+        },
+        {
+          "range": "0.4-0.6",
+          "count": 41,
+          "meanForecast": 0.484,
+          "observedRate": 0.585
+        },
+        {
+          "range": "0.6-0.8",
+          "count": 1,
+          "meanForecast": 0.669,
+          "observedRate": 0.0
+        }
+      ]
+    }
+  }
+}
