@@ -21,8 +21,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Build player game logs
-        run: python scripts/build_player_game_logs.py
       - name: Backtest model against prior weeks
         run: python scripts/backtest_player_props.py
       - name: Commit verified data
