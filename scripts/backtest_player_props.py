@@ -26,7 +26,10 @@ def main():
     # Median of prior games is a retrospective test threshold,
     # NOT an observed sportsbook line.
     line=sorted(train)[len(train)//2]+.5
-    # Require an established role in this market before testing.\n    if sorted(train)[len(train)//2] <= 0:\n     continue\n    p=predict(train[-10:],line)
+    # Require an established role in this market before testing.
+    if sorted(train)[len(train)//2] <= 0:
+     continue
+    p=predict(train[-10:],line)
     outcome=int(float(actual)>line)
     predictions.append((p,outcome))
   if predictions:
