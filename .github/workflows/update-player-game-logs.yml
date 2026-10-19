@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/update-player-game-logs.yml"
       - "scripts/build_player_game_logs.py"
+      - "scripts/backtest_player_props.py"
   workflow_dispatch:
   schedule:
     - cron: "30 13 * * 2"
@@ -21,9 +22,11 @@ jobs:
           python-version: "3.12"
       - name: Build player game logs
         run: python scripts/build_player_game_logs.py
+      - name: Backtest model against prior weeks
+        run: python scripts/backtest_player_props.py
       - name: Commit verified data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/player-game-logs-2026.json
+          git add data/player-game-logs-2026.json data/player-model-audit-2026.json
           git diff --cached --quiet || (git commit -m "Update verified NFL weekly player logs" && git push)
