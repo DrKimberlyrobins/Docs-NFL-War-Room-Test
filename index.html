@@ -687,7 +687,7 @@ grid.appendChild(stat);
 const status=document.getElementById("playerIntelStatus");
 status.replaceChildren();
 const heading=document.createElement("strong");
-heading.textContent="Qualified markets";
+heading.textContent="Player prop evaluation";
 status.appendChild(heading);
 
 const explicit=plain(row.dataset.qualifiedMarkets||"");
@@ -708,7 +708,7 @@ status.appendChild(list);
 }else{
 const message=document.createElement("p");
 message.textContent=
-"No verified qualification found — PASS / REVIEW.";
+"No verified QUALIFIED markets yet. Open the OVER / UNDER Intelligence section below to inspect weekly results, available Kambi lines, model estimates, and the evidence needed to qualify a play.";
 status.appendChild(message);
 }
 
@@ -1049,6 +1049,7 @@ enhance(source);
 
 <script src="./nfl-matchup-board.js"></script>
 <script src="./nfl-probability-board.js"></script>
+<script src="./nfl-over-under-intelligence.js"></script>
 </body>
 </html>
 
