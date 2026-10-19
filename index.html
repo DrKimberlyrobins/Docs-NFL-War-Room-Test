@@ -1050,6 +1050,40 @@ enhance(source);
 <script src="./nfl-matchup-board.js"></script>
 <script src="./nfl-probability-board.js"></script>
 <script src="./nfl-over-under-intelligence.js"></script>
+<script>
+(function(){
+const panel=document.getElementById("playerIntelOverlay");
+if(!panel)return;
+const host=document.createElement("section");
+host.id="docWeeklyGames";
+host.style.cssText="margin:15px 0;padding:12px;border:1px solid #35df93;border-radius:10px;overflow-x:auto";
+const heading=document.createElement("h3");heading.textContent="Verified game-by-game stats";host.append(heading);
+const msg=document.createElement("p");host.append(msg);
+const table=document.createElement("table");table.style.cssText="width:100%;font-size:13px;border-collapse:collapse";host.append(table);
+document.getElementById("playerIntelStats").insertAdjacentElement("afterend",host);
+let records=null,failed=false,shown="";
+fetch("./data/player-game-logs-2026.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("HTTP "+r.status);return r.json()}).then(d=>{records=d.players;show()}).catch(()=>{failed=true;show()});
+const norm=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"");
+function show(){
+ if(panel.hidden)return;
+ const name=document.getElementById("playerIntelTitle").textContent.trim();
+ const team=document.getElementById("playerIntelSubtitle").textContent.split(" • ")[0].trim();
+ const codes={"Washington Commanders":"WAS","San Francisco 49ers":"SF","Las Vegas Raiders":"LV","Los Angeles Rams":"LAR","Los Angeles Chargers":"LAC","New York Giants":"NYG","New York Jets":"NYJ","New England Patriots":"NE","Kansas City Chiefs":"KC","Green Bay Packers":"GB","Dallas Cowboys":"DAL","Philadelphia Eagles":"PHI","Seattle Seahawks":"SEA","Denver Broncos":"DEN","Chicago Bears":"CHI","Detroit Lions":"DET","Buffalo Bills":"BUF","Miami Dolphins":"MIA","Baltimore Ravens":"BAL","Cincinnati Bengals":"CIN","Cleveland Browns":"CLE","Pittsburgh Steelers":"PIT","Indianapolis Colts":"IND","Houston Texans":"HOU","Tennessee Titans":"TEN","Jacksonville Jaguars":"JAX","Carolina Panthers":"CAR","Atlanta Falcons":"ATL","New Orleans Saints":"NO","Tampa Bay Buccaneers":"TB","Arizona Cardinals":"ARI","Minnesota Vikings":"MIN"};
+ if(!records){msg.textContent=failed?"Weekly stats failed to load.":"Loading verified weekly stats...";return;}
+ const matches=records.filter(p=>p.team===(codes[team]||team)&&[p.name,p.shortName].some(n=>norm(n)===norm(name)));
+ const p=matches.length===1?matches[0]:null;
+ table.replaceChildren();
+ if(!p){msg.textContent="No exact player and team match in verified weekly logs.";return;}
+ msg.textContent=p.name+" — "+p.team+" — "+p.games.length+" games";
+ const fields=[["Week","week"],["Pass Yds","passingYards"],["Comp","completions"],["Att","attempts"],["Rush Yds","rushingYards"],["Carries","carries"],["Rec Yds","receivingYards"],["Receptions","receptions"],["Targets","targets"]];
+ const tr=document.createElement("tr");table.append(tr);
+ for(const [label] of fields){const th=document.createElement("th");th.textContent=label;th.style.padding="6px";tr.append(th);}
+ for(const game of [...p.games].sort((a,b)=>b.week-a.week)){const row=document.createElement("tr");table.append(row);for(const [,key] of fields){const td=document.createElement("td");td.textContent=game[key]??"—";td.style.cssText="padding:6px;text-align:center;border-top:1px solid #456";row.append(td);}}
+}
+new MutationObserver(show).observe(panel,{attributes:true,attributeFilter:["hidden"]});
+document.addEventListener("click",e=>{if(e.target.closest?.(".player-intel-link"))queueMicrotask(show)});
+})();
+</script>
 </body>
 </html>
 
