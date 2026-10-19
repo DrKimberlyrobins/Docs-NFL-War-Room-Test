@@ -43,7 +43,7 @@ function draw(root,name,team){
  const output=document.createElement("p");output.className="result";root.append(output);
  function recalc(){
   const threshold=number(line.value),price=number(odds.value),key=market.value;
-  const games=Array.isArray(player.games)?player.games.filter(g=>g&&/^\d{4}-\d\d-\d\d$/.test(g.date)).sort((a,b)=>b.date.localeCompare(a.date)):[];
+  const games=Array.isArray(player.games)?player.games.filter(g=>g&&/^\d{4}-(W\d{2}|\d\d-\d\d)$/.test(g.date)).sort((a,b)=>b.date.localeCompare(a.date)):[];
   const available=games.filter(g=>number(g[key])!==null);
   const last=available.slice(0,10);
   const sample=n=>{const rows=last.slice(0,n);if(threshold===null)return "enter line";if(!rows.length)return "no games";const over=rows.filter(g=>number(g[key])>threshold).length,under=rows.filter(g=>number(g[key])<threshold).length,push=rows.length-over-under;return over+"/"+rows.length+" OVER ("+pct(over/rows.length)+"), "+under+"/"+rows.length+" UNDER ("+pct(under/rows.length)+"), "+push+" push";};
