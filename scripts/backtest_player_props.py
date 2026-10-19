@@ -26,7 +26,7 @@ def main():
     # Median of prior games is a retrospective test threshold,
     # NOT an observed sportsbook line.
     line=sorted(train)[len(train)//2]+.5
-    p=predict(train[-10:],line)
+    # Avoid testing QB passing props on non-passers and receiver props on non-receivers.\n    # A meaningful prior role requires a nonzero median for this market.\n    if sorted(train)[len(train)//2]<=0: continue\n    p=predict(train[-10:],line)
     outcome=int(float(actual)>line)
     predictions.append((p,outcome))
   if predictions:
@@ -36,6 +36,6 @@ def main():
     sample=[(p,y) for p,y in predictions if low<=p<low+.2]
     if sample:bins.append({"range":f"{low:.1f}-{low+.2:.1f}","count":len(sample),"meanForecast":round(sum(p for p,_ in sample)/len(sample),3),"observedRate":round(sum(y for _,y in sample)/len(sample),3)})
    results[market]={"predictions":len(predictions),"brier":round(brier,4),"bins":bins}
- OUT.write_text(json.dumps({"season":2026,"note":"Walk-forward synthetic median thresholds; NOT sportsbook-line calibration or proof of profitable edge","markets":results},indent=2))
+ OUT.write_text(json.dumps({"season":2026,"note":"Walk-forward synthetic median thresholds, active-player samples only; NOT sportsbook-line calibration or proof of profitable edge","markets":results},indent=2))
  print("Backtest markets:",len(results),"evaluations:",sum(v["predictions"] for v in results.values()))
 if __name__=="__main__":main()
