@@ -14,7 +14,7 @@ const be=o=>o>0?100/(100+o):(-o)/(100-o);
 const erf=x=>{const s=Math.sign(x),a=Math.abs(x),t=1/(1+.3275911*a);return s*(1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t)*Math.exp(-a*a))};
 const cdf=x=>.5*(1+erf(x/Math.SQRT2));
 const styles=document.createElement("style");styles.textContent=".doc-ou{margin-top:16px;padding:15px;border:1px solid #36516b;border-radius:10px;background:#10243a}.doc-ou h3{color:#35df93;margin:0 0 8px}.doc-ou-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:9px}.doc-ou input,.doc-ou select{width:100%;padding:9px;margin:5px 0 10px;background:#edf3fa;color:#111;border:0;border-radius:6px}.doc-ou label{font-size:13px}.doc-ou .result{white-space:pre-wrap;line-height:1.65}.doc-ou .warning{color:#ffd184}";document.head.append(styles);
-let logs=null,quotes=null,loadError="",active="";
+let logs=null,quotes=null,audit=null,loadError="",active="";
 const getTeam=s=>CODES[s]||s;
 function playerMatch(name,team){
  if(!Array.isArray(logs?.players))return null;
@@ -105,7 +105,7 @@ function render(root,name,team){
   const validPrice=price!==null&&Number.isInteger(price)&&Math.abs(price)>=100;
   const forecast=threshold!==null?estimate(values.slice(0,10),threshold,side.value):null;
   const breakEven=validPrice?be(price):null;
-  const edge=forecast&&breakEven!==null?forecast.p-breakEven:null;
+  const edge=forecast&&breakEven!==null?forecast.p-breakEven:null;\n  const marketAudit=audit?.markets?.[key];\n  const enoughValidation=marketAudit&&marketAudit.predictions>=100&&marketAudit.brier<.22;\n  const grade=(!validPrice||threshold===null||values.length<5)?"PASS — insufficient verified inputs":(!enoughValidation?"REVIEW — backtest not sufficiently validated":(edge!==null&&edge>=.12&&values.slice(0,5).filter(x=>side.value==="OVER"?x>threshold:x<threshold).length>=4?"CANDIDATE — requires sportsbook and opponent verification":"PASS — edge or trend below threshold"));
   output.textContent="Season player appearances with "+key+": "+games.length+"\nLast 5: "+sample(5)+"\nLast 10: "+sample(10)+"\nGame-by-game (newest first): "+(games.slice(0,10).map(g=>"W"+g.week+" "+g[key]).join(" | ")||"none")+"\nRecent average (last "+Math.min(10,values.length)+"): "+(values.length?(values.slice(0,10).reduce((a,b)=>a+b,0)/Math.min(10,values.length)).toFixed(2):"unavailable")+"\nSportsbook break-even: "+(breakEven!==null?pct(breakEven):"enter verified odds")+"\nExploratory model "+side.value+" estimate: "+(forecast?pct(forecast.p):"at least 5 verified player games needed")+"\nExploratory model minus break-even: "+(edge!==null?(100*edge).toFixed(1)+" percentage points":"unavailable")+"\nOpponent defensive adjustment: not established\nModel validation: NOT BACKTESTED\nGRADE: REVIEW ONLY — no automatic QUALIFIED designation or Sheets save.";
  }
  [market,line,odds,side].forEach(el=>el.addEventListener("input",recalc));recalc();
@@ -120,9 +120,9 @@ function ensure(){
 }
 const overlay=document.getElementById("playerIntelOverlay");if(overlay)new MutationObserver(ensure).observe(overlay,{attributes:true,attributeFilter:["hidden"]});
 document.addEventListener("click",e=>{if(e.target.closest?.(".player-intel-link"))queueMicrotask(ensure)});
-Promise.allSettled([fetch("data/player-game-logs-2026.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("HTTP "+r.status);return r.json()}),fetch("data/kambi-player-props-2026.json",{cache:"no-store"}).then(r=>r.json())]).then(([a,b])=>{
+Promise.allSettled([fetch("data/player-game-logs-2026.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("HTTP "+r.status);return r.json()}),fetch("data/kambi-player-props-2026.json",{cache:"no-store"}).then(r=>r.json()),fetch("data/player-model-audit-2026.json",{cache:"no-store"}).then(r=>r.json())]).then(([a,b,d])=>{
  if(a.status==="fulfilled"&&Array.isArray(a.value.players))logs=a.value;else loadError="Weekly logs have not been generated successfully.";
- if(b.status==="fulfilled"&&Array.isArray(b.value?.props))quotes=b.value;
+ if(b.status==="fulfilled"&&Array.isArray(b.value?.props))quotes=b.value;\n if(d.status==="fulfilled"&&d.value?.markets)audit=d.value;
  active="";ensure();
 });
 })();
