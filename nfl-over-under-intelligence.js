@@ -82,6 +82,7 @@ function render(root,name,team){
  const h=document.createElement("h3");h.textContent="Player OVER / UNDER Intelligence";root.append(h);
  const player=playerMatch(name,team);
  if(!player){const p=document.createElement("p");p.className="warning";p.textContent="No matched verified weekly game logs — PASS. "+loadError;root.append(p);return;}
+ const playerInfo=document.createElement("p");playerInfo.className="note";playerInfo.textContent="Verified player: "+player.name+" • "+player.team+" • "+(player.games||[]).length+" weekly game logs";root.append(playerInfo);
  const grid=document.createElement("div");grid.className="doc-ou-grid";root.append(grid);
  function field(label,type,options){
   const wrapper=document.createElement("label");wrapper.textContent=label;
@@ -107,7 +108,7 @@ function render(root,name,team){
   const breakEven=validPrice?be(price):null;
   const edge=forecast&&breakEven!==null?forecast.p-breakEven:null;
   const marketAudit=audit?.markets?.[key];
-  const enoughValidation=marketAudit&&marketAudit.predictions>=100&&marketAudit.brier<.22;
+  const enoughValidation=marketAudit&&marketAudit.predictions>=100&&marketAudit.beatsConstant50===true&&marketAudit.status==="EXPLORATORY";
   const grade=(!validPrice||threshold===null||values.length<5)?"PASS — insufficient verified inputs":(!enoughValidation?"REVIEW — backtest not sufficiently validated":(edge!==null&&edge>=.12&&values.slice(0,5).filter(x=>side.value==="OVER"?x>threshold:x<threshold).length>=4?"CANDIDATE — requires sportsbook and opponent verification":"PASS — edge or trend below threshold"));
   output.textContent="Season player appearances with "+key+": "+games.length+"\nLast 5: "+sample(5)+"\nLast 10: "+sample(10)+"\nGame-by-game (newest first): "+(games.slice(0,10).map(g=>"W"+g.week+" "+g[key]).join(" | ")||"none")+"\nRecent average (last "+Math.min(10,values.length)+"): "+(values.length?(values.slice(0,10).reduce((a,b)=>a+b,0)/Math.min(10,values.length)).toFixed(2):"unavailable")+"\nSportsbook break-even: "+(breakEven!==null?pct(breakEven):"enter verified odds")+"\nExploratory model "+side.value+" estimate: "+(forecast?pct(forecast.p):"at least 5 verified player games needed")+"\nExploratory model minus break-even: "+(edge!==null?(100*edge).toFixed(1)+" percentage points":"unavailable")+"\nOpponent defensive adjustment: not established\nWalk-forward audit: "+(marketAudit?marketAudit.predictions+" tests, Brier "+marketAudit.brier:"pending")+"\nGRADE: "+grade+"\nQUALIFIED/Sheets save: disabled pending real sportsbook-line validation.";
  }
