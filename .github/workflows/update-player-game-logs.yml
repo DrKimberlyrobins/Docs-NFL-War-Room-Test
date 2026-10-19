@@ -1,5 +1,11 @@
 name: Update NFL player game logs
 on:
+  push:
+    branches:
+      - player-probability-upgrade-20261019
+    paths:
+      - ".github/workflows/update-player-game-logs.yml"
+      - "scripts/build_player_game_logs.py"
   workflow_dispatch:
   schedule:
     - cron: "30 13 * * 2"
