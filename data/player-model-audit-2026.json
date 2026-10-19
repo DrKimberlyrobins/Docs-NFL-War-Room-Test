@@ -1,10 +1,87 @@
 {
   "season": 2026,
-  "note": "Walk-forward synthetic median thresholds, active-player samples only; NOT sportsbook-line calibration or proof of profitable edge",
+  "source": "https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2026.csv",
+  "method": "walk-forward; prior 5+ games; usage-qualified players; synthetic median-based lines",
+  "warning": "NOT tested against historical sportsbook lines; NOT calibrated for betting or QUALIFIED picks",
   "markets": {
     "passingYards": {
       "predictions": 17,
+      "uniquePlayers": 17,
+      "playersEvaluated": [
+        {
+          "name": "Aaron Rodgers",
+          "tests": 1
+        },
+        {
+          "name": "Bo Nix",
+          "tests": 1
+        },
+        {
+          "name": "C.J. Stroud",
+          "tests": 1
+        },
+        {
+          "name": "Cam Ward",
+          "tests": 1
+        },
+        {
+          "name": "Dak Prescott",
+          "tests": 1
+        },
+        {
+          "name": "Daniel Jones",
+          "tests": 1
+        },
+        {
+          "name": "Deshaun Watson",
+          "tests": 1
+        },
+        {
+          "name": "Drake Maye",
+          "tests": 1
+        },
+        {
+          "name": "Geno Smith",
+          "tests": 1
+        },
+        {
+          "name": "Jacoby Brissett",
+          "tests": 1
+        },
+        {
+          "name": "Jordan Love",
+          "tests": 1
+        },
+        {
+          "name": "Josh Allen",
+          "tests": 1
+        },
+        {
+          "name": "Justin Herbert",
+          "tests": 1
+        },
+        {
+          "name": "Kirk Cousins",
+          "tests": 1
+        },
+        {
+          "name": "Matthew Stafford",
+          "tests": 1
+        },
+        {
+          "name": "Trevor Lawrence",
+          "tests": 1
+        },
+        {
+          "name": "Tyler Shough",
+          "tests": 1
+        }
+      ],
       "brier": 0.2157,
+      "constant50Brier": 0.25,
+      "overRate": 0.5294,
+      "beatsConstant50": true,
+      "status": "SMALL_SAMPLE",
       "bins": [
         {
           "range": "0.2-0.4",
@@ -28,7 +105,82 @@
     },
     "completions": {
       "predictions": 17,
+      "uniquePlayers": 17,
+      "playersEvaluated": [
+        {
+          "name": "Aaron Rodgers",
+          "tests": 1
+        },
+        {
+          "name": "Bo Nix",
+          "tests": 1
+        },
+        {
+          "name": "C.J. Stroud",
+          "tests": 1
+        },
+        {
+          "name": "Cam Ward",
+          "tests": 1
+        },
+        {
+          "name": "Dak Prescott",
+          "tests": 1
+        },
+        {
+          "name": "Daniel Jones",
+          "tests": 1
+        },
+        {
+          "name": "Deshaun Watson",
+          "tests": 1
+        },
+        {
+          "name": "Drake Maye",
+          "tests": 1
+        },
+        {
+          "name": "Geno Smith",
+          "tests": 1
+        },
+        {
+          "name": "Jacoby Brissett",
+          "tests": 1
+        },
+        {
+          "name": "Jordan Love",
+          "tests": 1
+        },
+        {
+          "name": "Josh Allen",
+          "tests": 1
+        },
+        {
+          "name": "Justin Herbert",
+          "tests": 1
+        },
+        {
+          "name": "Kirk Cousins",
+          "tests": 1
+        },
+        {
+          "name": "Matthew Stafford",
+          "tests": 1
+        },
+        {
+          "name": "Trevor Lawrence",
+          "tests": 1
+        },
+        {
+          "name": "Tyler Shough",
+          "tests": 1
+        }
+      ],
       "brier": 0.2509,
+      "constant50Brier": 0.25,
+      "overRate": 0.4706,
+      "beatsConstant50": false,
+      "status": "SMALL_SAMPLE",
       "bins": [
         {
           "range": "0.2-0.4",
@@ -52,7 +204,82 @@
     },
     "attempts": {
       "predictions": 17,
+      "uniquePlayers": 17,
+      "playersEvaluated": [
+        {
+          "name": "Aaron Rodgers",
+          "tests": 1
+        },
+        {
+          "name": "Bo Nix",
+          "tests": 1
+        },
+        {
+          "name": "C.J. Stroud",
+          "tests": 1
+        },
+        {
+          "name": "Cam Ward",
+          "tests": 1
+        },
+        {
+          "name": "Dak Prescott",
+          "tests": 1
+        },
+        {
+          "name": "Daniel Jones",
+          "tests": 1
+        },
+        {
+          "name": "Deshaun Watson",
+          "tests": 1
+        },
+        {
+          "name": "Drake Maye",
+          "tests": 1
+        },
+        {
+          "name": "Geno Smith",
+          "tests": 1
+        },
+        {
+          "name": "Jacoby Brissett",
+          "tests": 1
+        },
+        {
+          "name": "Jordan Love",
+          "tests": 1
+        },
+        {
+          "name": "Josh Allen",
+          "tests": 1
+        },
+        {
+          "name": "Justin Herbert",
+          "tests": 1
+        },
+        {
+          "name": "Kirk Cousins",
+          "tests": 1
+        },
+        {
+          "name": "Matthew Stafford",
+          "tests": 1
+        },
+        {
+          "name": "Trevor Lawrence",
+          "tests": 1
+        },
+        {
+          "name": "Tyler Shough",
+          "tests": 1
+        }
+      ],
       "brier": 0.249,
+      "constant50Brier": 0.25,
+      "overRate": 0.4706,
+      "beatsConstant50": true,
+      "status": "SMALL_SAMPLE",
       "bins": [
         {
           "range": "0.2-0.4",
@@ -75,56 +302,320 @@
       ]
     },
     "rushingYards": {
-      "predictions": 53,
-      "brier": 0.2438,
-      "bins": [
+      "predictions": 32,
+      "uniquePlayers": 32,
+      "playersEvaluated": [
         {
-          "range": "0.0-0.2",
-          "count": 1,
-          "meanForecast": 0.137,
-          "observedRate": 0.0
+          "name": "Ashton Jeanty",
+          "tests": 1
         },
         {
+          "name": "Bhayshul Tuten",
+          "tests": 1
+        },
+        {
+          "name": "Bijan Robinson",
+          "tests": 1
+        },
+        {
+          "name": "Blake Corum",
+          "tests": 1
+        },
+        {
+          "name": "Braelon Allen",
+          "tests": 1
+        },
+        {
+          "name": "Brian Robinson",
+          "tests": 1
+        },
+        {
+          "name": "Bucky Irving",
+          "tests": 1
+        },
+        {
+          "name": "Chris Rodriguez Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Corey Kiner",
+          "tests": 1
+        },
+        {
+          "name": "D'Andre Swift",
+          "tests": 1
+        },
+        {
+          "name": "Derrick Henry",
+          "tests": 1
+        },
+        {
+          "name": "Deshaun Watson",
+          "tests": 1
+        },
+        {
+          "name": "Drake Maye",
+          "tests": 1
+        },
+        {
+          "name": "Emanuel Wilson",
+          "tests": 1
+        },
+        {
+          "name": "George Holani",
+          "tests": 1
+        },
+        {
+          "name": "J.K. Dobbins",
+          "tests": 1
+        },
+        {
+          "name": "James Cook",
+          "tests": 1
+        },
+        {
+          "name": "Javonte Williams",
+          "tests": 1
+        },
+        {
+          "name": "Jaylen Warren",
+          "tests": 1
+        },
+        {
+          "name": "Jonathan Taylor",
+          "tests": 1
+        },
+        {
+          "name": "Josh Allen",
+          "tests": 1
+        },
+        {
+          "name": "Justin Herbert",
+          "tests": 1
+        },
+        {
+          "name": "Kaleb Johnson",
+          "tests": 1
+        },
+        {
+          "name": "Keaton Mitchell",
+          "tests": 1
+        },
+        {
+          "name": "Kyren Williams",
+          "tests": 1
+        },
+        {
+          "name": "MarShawn Lloyd",
+          "tests": 1
+        },
+        {
+          "name": "Mike Washington Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Omarion Hampton",
+          "tests": 1
+        },
+        {
+          "name": "Rhamondre Stevenson",
+          "tests": 1
+        },
+        {
+          "name": "Tony Pollard",
+          "tests": 1
+        },
+        {
+          "name": "Tyler Allgeier",
+          "tests": 1
+        },
+        {
+          "name": "Woody Marks",
+          "tests": 1
+        }
+      ],
+      "brier": 0.2427,
+      "constant50Brier": 0.25,
+      "overRate": 0.3438,
+      "beatsConstant50": true,
+      "status": "SMALL_SAMPLE",
+      "bins": [
+        {
           "range": "0.2-0.4",
-          "count": 11,
-          "meanForecast": 0.345,
-          "observedRate": 0.091
+          "count": 8,
+          "meanForecast": 0.338,
+          "observedRate": 0.125
         },
         {
           "range": "0.4-0.6",
-          "count": 23,
-          "meanForecast": 0.511,
-          "observedRate": 0.435
+          "count": 13,
+          "meanForecast": 0.523,
+          "observedRate": 0.462
         },
         {
           "range": "0.6-0.8",
-          "count": 18,
-          "meanForecast": 0.639,
-          "observedRate": 0.389
+          "count": 11,
+          "meanForecast": 0.647,
+          "observedRate": 0.364
         }
       ]
     },
     "carries": {
-      "predictions": 57,
-      "brier": 0.1961,
+      "predictions": 32,
+      "uniquePlayers": 32,
+      "playersEvaluated": [
+        {
+          "name": "Ashton Jeanty",
+          "tests": 1
+        },
+        {
+          "name": "Bhayshul Tuten",
+          "tests": 1
+        },
+        {
+          "name": "Bijan Robinson",
+          "tests": 1
+        },
+        {
+          "name": "Blake Corum",
+          "tests": 1
+        },
+        {
+          "name": "Braelon Allen",
+          "tests": 1
+        },
+        {
+          "name": "Brian Robinson",
+          "tests": 1
+        },
+        {
+          "name": "Bucky Irving",
+          "tests": 1
+        },
+        {
+          "name": "Chris Rodriguez Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Corey Kiner",
+          "tests": 1
+        },
+        {
+          "name": "D'Andre Swift",
+          "tests": 1
+        },
+        {
+          "name": "Derrick Henry",
+          "tests": 1
+        },
+        {
+          "name": "Deshaun Watson",
+          "tests": 1
+        },
+        {
+          "name": "Drake Maye",
+          "tests": 1
+        },
+        {
+          "name": "Emanuel Wilson",
+          "tests": 1
+        },
+        {
+          "name": "George Holani",
+          "tests": 1
+        },
+        {
+          "name": "J.K. Dobbins",
+          "tests": 1
+        },
+        {
+          "name": "James Cook",
+          "tests": 1
+        },
+        {
+          "name": "Javonte Williams",
+          "tests": 1
+        },
+        {
+          "name": "Jaylen Warren",
+          "tests": 1
+        },
+        {
+          "name": "Jonathan Taylor",
+          "tests": 1
+        },
+        {
+          "name": "Josh Allen",
+          "tests": 1
+        },
+        {
+          "name": "Justin Herbert",
+          "tests": 1
+        },
+        {
+          "name": "Kaleb Johnson",
+          "tests": 1
+        },
+        {
+          "name": "Keaton Mitchell",
+          "tests": 1
+        },
+        {
+          "name": "Kyren Williams",
+          "tests": 1
+        },
+        {
+          "name": "MarShawn Lloyd",
+          "tests": 1
+        },
+        {
+          "name": "Mike Washington Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Omarion Hampton",
+          "tests": 1
+        },
+        {
+          "name": "Rhamondre Stevenson",
+          "tests": 1
+        },
+        {
+          "name": "Tony Pollard",
+          "tests": 1
+        },
+        {
+          "name": "Tyler Allgeier",
+          "tests": 1
+        },
+        {
+          "name": "Woody Marks",
+          "tests": 1
+        }
+      ],
+      "brier": 0.2511,
+      "constant50Brier": 0.25,
+      "overRate": 0.5,
+      "beatsConstant50": false,
+      "status": "SMALL_SAMPLE",
       "bins": [
         {
           "range": "0.0-0.2",
-          "count": 12,
-          "meanForecast": 0.149,
-          "observedRate": 0.083
+          "count": 2,
+          "meanForecast": 0.166,
+          "observedRate": 0.5
         },
         {
           "range": "0.2-0.4",
-          "count": 29,
-          "meanForecast": 0.32,
-          "observedRate": 0.345
+          "count": 16,
+          "meanForecast": 0.319,
+          "observedRate": 0.438
         },
         {
           "range": "0.4-0.6",
-          "count": 15,
-          "meanForecast": 0.506,
-          "observedRate": 0.6
+          "count": 13,
+          "meanForecast": 0.505,
+          "observedRate": 0.615
         },
         {
           "range": "0.6-0.8",
@@ -135,50 +626,696 @@
       ]
     },
     "receivingYards": {
-      "predictions": 109,
-      "brier": 0.253,
+      "predictions": 79,
+      "uniquePlayers": 79,
+      "playersEvaluated": [
+        {
+          "name": "AJ Barner",
+          "tests": 1
+        },
+        {
+          "name": "Ashton Jeanty",
+          "tests": 1
+        },
+        {
+          "name": "Bijan Robinson",
+          "tests": 1
+        },
+        {
+          "name": "Brenton Strange",
+          "tests": 1
+        },
+        {
+          "name": "Brian Thomas Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Bryce Lance",
+          "tests": 1
+        },
+        {
+          "name": "Bucky Irving",
+          "tests": 1
+        },
+        {
+          "name": "Cade Otton",
+          "tests": 1
+        },
+        {
+          "name": "Carnell Tate",
+          "tests": 1
+        },
+        {
+          "name": "CeeDee Lamb",
+          "tests": 1
+        },
+        {
+          "name": "Chris Godwin Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Chris Olave",
+          "tests": 1
+        },
+        {
+          "name": "Christian Watson",
+          "tests": 1
+        },
+        {
+          "name": "Colston Loveland",
+          "tests": 1
+        },
+        {
+          "name": "Cooper Kupp",
+          "tests": 1
+        },
+        {
+          "name": "Courtland Sutton",
+          "tests": 1
+        },
+        {
+          "name": "D'Andre Swift",
+          "tests": 1
+        },
+        {
+          "name": "DK Metcalf",
+          "tests": 1
+        },
+        {
+          "name": "Dalton Kincaid",
+          "tests": 1
+        },
+        {
+          "name": "Dalton Schultz",
+          "tests": 1
+        },
+        {
+          "name": "Darnell Mooney",
+          "tests": 1
+        },
+        {
+          "name": "Darnell Washington",
+          "tests": 1
+        },
+        {
+          "name": "Davante Adams",
+          "tests": 1
+        },
+        {
+          "name": "DeMario Douglas",
+          "tests": 1
+        },
+        {
+          "name": "Denzel Boston",
+          "tests": 1
+        },
+        {
+          "name": "Devaughn Vele",
+          "tests": 1
+        },
+        {
+          "name": "Dontayvion Wicks",
+          "tests": 1
+        },
+        {
+          "name": "Drake London",
+          "tests": 1
+        },
+        {
+          "name": "Emeka Egbuka",
+          "tests": 1
+        },
+        {
+          "name": "Evan Engram",
+          "tests": 1
+        },
+        {
+          "name": "Garrett Wilson",
+          "tests": 1
+        },
+        {
+          "name": "George Pickens",
+          "tests": 1
+        },
+        {
+          "name": "Harold Fannin Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Hunter Henry",
+          "tests": 1
+        },
+        {
+          "name": "Isaiah Likely",
+          "tests": 1
+        },
+        {
+          "name": "Jahan Dotson",
+          "tests": 1
+        },
+        {
+          "name": "Jake Ferguson",
+          "tests": 1
+        },
+        {
+          "name": "Jakobi Meyers",
+          "tests": 1
+        },
+        {
+          "name": "Javonte Williams",
+          "tests": 1
+        },
+        {
+          "name": "Jaxon Smith-Njigba",
+          "tests": 1
+        },
+        {
+          "name": "Jaylen Waddle",
+          "tests": 1
+        },
+        {
+          "name": "Jaylen Warren",
+          "tests": 1
+        },
+        {
+          "name": "Jaylin Noel",
+          "tests": 1
+        },
+        {
+          "name": "Jonathan Taylor",
+          "tests": 1
+        },
+        {
+          "name": "Josh Downs",
+          "tests": 1
+        },
+        {
+          "name": "Juwan Johnson",
+          "tests": 1
+        },
+        {
+          "name": "KC Concepcion",
+          "tests": 1
+        },
+        {
+          "name": "Kalif Raymond",
+          "tests": 1
+        },
+        {
+          "name": "Kayshon Boutte",
+          "tests": 1
+        },
+        {
+          "name": "Kenny Gainwell",
+          "tests": 1
+        },
+        {
+          "name": "Kenyon Sadiq",
+          "tests": 1
+        },
+        {
+          "name": "Keon Coleman",
+          "tests": 1
+        },
+        {
+          "name": "Khalil Shakir",
+          "tests": 1
+        },
+        {
+          "name": "Kyle Pitts",
+          "tests": 1
+        },
+        {
+          "name": "Kyren Williams",
+          "tests": 1
+        },
+        {
+          "name": "Laquon Treadwell",
+          "tests": 1
+        },
+        {
+          "name": "Luther Burden III",
+          "tests": 1
+        },
+        {
+          "name": "Makai Lemon",
+          "tests": 1
+        },
+        {
+          "name": "Malachi Fields",
+          "tests": 1
+        },
+        {
+          "name": "Malik Nabers",
+          "tests": 1
+        },
+        {
+          "name": "Mark Andrews",
+          "tests": 1
+        },
+        {
+          "name": "Matthew Golden",
+          "tests": 1
+        },
+        {
+          "name": "Michael Mayer",
+          "tests": 1
+        },
+        {
+          "name": "Michael Wilson",
+          "tests": 1
+        },
+        {
+          "name": "Oronde Gadsden II",
+          "tests": 1
+        },
+        {
+          "name": "Parker Washington",
+          "tests": 1
+        },
+        {
+          "name": "Pat Freiermuth",
+          "tests": 1
+        },
+        {
+          "name": "Rashid Shaheed",
+          "tests": 1
+        },
+        {
+          "name": "Rashod Bateman",
+          "tests": 1
+        },
+        {
+          "name": "Rhamondre Stevenson",
+          "tests": 1
+        },
+        {
+          "name": "Rome Odunze",
+          "tests": 1
+        },
+        {
+          "name": "Romeo Doubs",
+          "tests": 1
+        },
+        {
+          "name": "Ryan Flournoy",
+          "tests": 1
+        },
+        {
+          "name": "Tre Tucker",
+          "tests": 1
+        },
+        {
+          "name": "Trey McBride",
+          "tests": 1
+        },
+        {
+          "name": "Tucker Kraft",
+          "tests": 1
+        },
+        {
+          "name": "Tyjae Spears",
+          "tests": 1
+        },
+        {
+          "name": "Wan'Dale Robinson",
+          "tests": 1
+        },
+        {
+          "name": "Xavier Hutchinson",
+          "tests": 1
+        }
+      ],
+      "brier": 0.2439,
+      "constant50Brier": 0.25,
+      "overRate": 0.3924,
+      "beatsConstant50": true,
+      "status": "SMALL_SAMPLE",
       "bins": [
         {
           "range": "0.2-0.4",
-          "count": 13,
-          "meanForecast": 0.338,
-          "observedRate": 0.462
+          "count": 7,
+          "meanForecast": 0.339,
+          "observedRate": 0.429
         },
         {
           "range": "0.4-0.6",
-          "count": 66,
-          "meanForecast": 0.495,
-          "observedRate": 0.273
+          "count": 52,
+          "meanForecast": 0.496,
+          "observedRate": 0.288
         },
         {
           "range": "0.6-0.8",
-          "count": 30,
-          "meanForecast": 0.632,
-          "observedRate": 0.533
+          "count": 20,
+          "meanForecast": 0.636,
+          "observedRate": 0.65
         }
       ]
     },
     "receptions": {
-      "predictions": 111,
-      "brier": 0.2413,
+      "predictions": 79,
+      "uniquePlayers": 79,
+      "playersEvaluated": [
+        {
+          "name": "AJ Barner",
+          "tests": 1
+        },
+        {
+          "name": "Ashton Jeanty",
+          "tests": 1
+        },
+        {
+          "name": "Bijan Robinson",
+          "tests": 1
+        },
+        {
+          "name": "Brenton Strange",
+          "tests": 1
+        },
+        {
+          "name": "Brian Thomas Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Bryce Lance",
+          "tests": 1
+        },
+        {
+          "name": "Bucky Irving",
+          "tests": 1
+        },
+        {
+          "name": "Cade Otton",
+          "tests": 1
+        },
+        {
+          "name": "Carnell Tate",
+          "tests": 1
+        },
+        {
+          "name": "CeeDee Lamb",
+          "tests": 1
+        },
+        {
+          "name": "Chris Godwin Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Chris Olave",
+          "tests": 1
+        },
+        {
+          "name": "Christian Watson",
+          "tests": 1
+        },
+        {
+          "name": "Colston Loveland",
+          "tests": 1
+        },
+        {
+          "name": "Cooper Kupp",
+          "tests": 1
+        },
+        {
+          "name": "Courtland Sutton",
+          "tests": 1
+        },
+        {
+          "name": "D'Andre Swift",
+          "tests": 1
+        },
+        {
+          "name": "DK Metcalf",
+          "tests": 1
+        },
+        {
+          "name": "Dalton Kincaid",
+          "tests": 1
+        },
+        {
+          "name": "Dalton Schultz",
+          "tests": 1
+        },
+        {
+          "name": "Darnell Mooney",
+          "tests": 1
+        },
+        {
+          "name": "Darnell Washington",
+          "tests": 1
+        },
+        {
+          "name": "Davante Adams",
+          "tests": 1
+        },
+        {
+          "name": "DeMario Douglas",
+          "tests": 1
+        },
+        {
+          "name": "Denzel Boston",
+          "tests": 1
+        },
+        {
+          "name": "Devaughn Vele",
+          "tests": 1
+        },
+        {
+          "name": "Dontayvion Wicks",
+          "tests": 1
+        },
+        {
+          "name": "Drake London",
+          "tests": 1
+        },
+        {
+          "name": "Emeka Egbuka",
+          "tests": 1
+        },
+        {
+          "name": "Evan Engram",
+          "tests": 1
+        },
+        {
+          "name": "Garrett Wilson",
+          "tests": 1
+        },
+        {
+          "name": "George Pickens",
+          "tests": 1
+        },
+        {
+          "name": "Harold Fannin Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Hunter Henry",
+          "tests": 1
+        },
+        {
+          "name": "Isaiah Likely",
+          "tests": 1
+        },
+        {
+          "name": "Jahan Dotson",
+          "tests": 1
+        },
+        {
+          "name": "Jake Ferguson",
+          "tests": 1
+        },
+        {
+          "name": "Jakobi Meyers",
+          "tests": 1
+        },
+        {
+          "name": "Javonte Williams",
+          "tests": 1
+        },
+        {
+          "name": "Jaxon Smith-Njigba",
+          "tests": 1
+        },
+        {
+          "name": "Jaylen Waddle",
+          "tests": 1
+        },
+        {
+          "name": "Jaylen Warren",
+          "tests": 1
+        },
+        {
+          "name": "Jaylin Noel",
+          "tests": 1
+        },
+        {
+          "name": "Jonathan Taylor",
+          "tests": 1
+        },
+        {
+          "name": "Josh Downs",
+          "tests": 1
+        },
+        {
+          "name": "Juwan Johnson",
+          "tests": 1
+        },
+        {
+          "name": "KC Concepcion",
+          "tests": 1
+        },
+        {
+          "name": "Kalif Raymond",
+          "tests": 1
+        },
+        {
+          "name": "Kayshon Boutte",
+          "tests": 1
+        },
+        {
+          "name": "Kenny Gainwell",
+          "tests": 1
+        },
+        {
+          "name": "Kenyon Sadiq",
+          "tests": 1
+        },
+        {
+          "name": "Keon Coleman",
+          "tests": 1
+        },
+        {
+          "name": "Khalil Shakir",
+          "tests": 1
+        },
+        {
+          "name": "Kyle Pitts",
+          "tests": 1
+        },
+        {
+          "name": "Kyren Williams",
+          "tests": 1
+        },
+        {
+          "name": "Laquon Treadwell",
+          "tests": 1
+        },
+        {
+          "name": "Luther Burden III",
+          "tests": 1
+        },
+        {
+          "name": "Makai Lemon",
+          "tests": 1
+        },
+        {
+          "name": "Malachi Fields",
+          "tests": 1
+        },
+        {
+          "name": "Malik Nabers",
+          "tests": 1
+        },
+        {
+          "name": "Mark Andrews",
+          "tests": 1
+        },
+        {
+          "name": "Matthew Golden",
+          "tests": 1
+        },
+        {
+          "name": "Michael Mayer",
+          "tests": 1
+        },
+        {
+          "name": "Michael Wilson",
+          "tests": 1
+        },
+        {
+          "name": "Oronde Gadsden II",
+          "tests": 1
+        },
+        {
+          "name": "Parker Washington",
+          "tests": 1
+        },
+        {
+          "name": "Pat Freiermuth",
+          "tests": 1
+        },
+        {
+          "name": "Rashid Shaheed",
+          "tests": 1
+        },
+        {
+          "name": "Rashod Bateman",
+          "tests": 1
+        },
+        {
+          "name": "Rhamondre Stevenson",
+          "tests": 1
+        },
+        {
+          "name": "Rome Odunze",
+          "tests": 1
+        },
+        {
+          "name": "Romeo Doubs",
+          "tests": 1
+        },
+        {
+          "name": "Ryan Flournoy",
+          "tests": 1
+        },
+        {
+          "name": "Tre Tucker",
+          "tests": 1
+        },
+        {
+          "name": "Trey McBride",
+          "tests": 1
+        },
+        {
+          "name": "Tucker Kraft",
+          "tests": 1
+        },
+        {
+          "name": "Tyjae Spears",
+          "tests": 1
+        },
+        {
+          "name": "Wan'Dale Robinson",
+          "tests": 1
+        },
+        {
+          "name": "Xavier Hutchinson",
+          "tests": 1
+        }
+      ],
+      "brier": 0.2442,
+      "constant50Brier": 0.25,
+      "overRate": 0.443,
+      "beatsConstant50": true,
+      "status": "SMALL_SAMPLE",
       "bins": [
         {
           "range": "0.0-0.2",
-          "count": 24,
-          "meanForecast": 0.135,
+          "count": 8,
+          "meanForecast": 0.132,
           "observedRate": 0.375
         },
         {
           "range": "0.2-0.4",
-          "count": 54,
-          "meanForecast": 0.29,
-          "observedRate": 0.296
+          "count": 42,
+          "meanForecast": 0.292,
+          "observedRate": 0.31
         },
         {
           "range": "0.4-0.6",
-          "count": 32,
-          "meanForecast": 0.481,
-          "observedRate": 0.594
+          "count": 28,
+          "meanForecast": 0.478,
+          "observedRate": 0.643
         },
         {
           "range": "0.6-0.8",
@@ -189,26 +1326,349 @@
       ]
     },
     "targets": {
-      "predictions": 119,
-      "brier": 0.2398,
+      "predictions": 79,
+      "uniquePlayers": 79,
+      "playersEvaluated": [
+        {
+          "name": "AJ Barner",
+          "tests": 1
+        },
+        {
+          "name": "Ashton Jeanty",
+          "tests": 1
+        },
+        {
+          "name": "Bijan Robinson",
+          "tests": 1
+        },
+        {
+          "name": "Brenton Strange",
+          "tests": 1
+        },
+        {
+          "name": "Brian Thomas Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Bryce Lance",
+          "tests": 1
+        },
+        {
+          "name": "Bucky Irving",
+          "tests": 1
+        },
+        {
+          "name": "Cade Otton",
+          "tests": 1
+        },
+        {
+          "name": "Carnell Tate",
+          "tests": 1
+        },
+        {
+          "name": "CeeDee Lamb",
+          "tests": 1
+        },
+        {
+          "name": "Chris Godwin Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Chris Olave",
+          "tests": 1
+        },
+        {
+          "name": "Christian Watson",
+          "tests": 1
+        },
+        {
+          "name": "Colston Loveland",
+          "tests": 1
+        },
+        {
+          "name": "Cooper Kupp",
+          "tests": 1
+        },
+        {
+          "name": "Courtland Sutton",
+          "tests": 1
+        },
+        {
+          "name": "D'Andre Swift",
+          "tests": 1
+        },
+        {
+          "name": "DK Metcalf",
+          "tests": 1
+        },
+        {
+          "name": "Dalton Kincaid",
+          "tests": 1
+        },
+        {
+          "name": "Dalton Schultz",
+          "tests": 1
+        },
+        {
+          "name": "Darnell Mooney",
+          "tests": 1
+        },
+        {
+          "name": "Darnell Washington",
+          "tests": 1
+        },
+        {
+          "name": "Davante Adams",
+          "tests": 1
+        },
+        {
+          "name": "DeMario Douglas",
+          "tests": 1
+        },
+        {
+          "name": "Denzel Boston",
+          "tests": 1
+        },
+        {
+          "name": "Devaughn Vele",
+          "tests": 1
+        },
+        {
+          "name": "Dontayvion Wicks",
+          "tests": 1
+        },
+        {
+          "name": "Drake London",
+          "tests": 1
+        },
+        {
+          "name": "Emeka Egbuka",
+          "tests": 1
+        },
+        {
+          "name": "Evan Engram",
+          "tests": 1
+        },
+        {
+          "name": "Garrett Wilson",
+          "tests": 1
+        },
+        {
+          "name": "George Pickens",
+          "tests": 1
+        },
+        {
+          "name": "Harold Fannin Jr.",
+          "tests": 1
+        },
+        {
+          "name": "Hunter Henry",
+          "tests": 1
+        },
+        {
+          "name": "Isaiah Likely",
+          "tests": 1
+        },
+        {
+          "name": "Jahan Dotson",
+          "tests": 1
+        },
+        {
+          "name": "Jake Ferguson",
+          "tests": 1
+        },
+        {
+          "name": "Jakobi Meyers",
+          "tests": 1
+        },
+        {
+          "name": "Javonte Williams",
+          "tests": 1
+        },
+        {
+          "name": "Jaxon Smith-Njigba",
+          "tests": 1
+        },
+        {
+          "name": "Jaylen Waddle",
+          "tests": 1
+        },
+        {
+          "name": "Jaylen Warren",
+          "tests": 1
+        },
+        {
+          "name": "Jaylin Noel",
+          "tests": 1
+        },
+        {
+          "name": "Jonathan Taylor",
+          "tests": 1
+        },
+        {
+          "name": "Josh Downs",
+          "tests": 1
+        },
+        {
+          "name": "Juwan Johnson",
+          "tests": 1
+        },
+        {
+          "name": "KC Concepcion",
+          "tests": 1
+        },
+        {
+          "name": "Kalif Raymond",
+          "tests": 1
+        },
+        {
+          "name": "Kayshon Boutte",
+          "tests": 1
+        },
+        {
+          "name": "Kenny Gainwell",
+          "tests": 1
+        },
+        {
+          "name": "Kenyon Sadiq",
+          "tests": 1
+        },
+        {
+          "name": "Keon Coleman",
+          "tests": 1
+        },
+        {
+          "name": "Khalil Shakir",
+          "tests": 1
+        },
+        {
+          "name": "Kyle Pitts",
+          "tests": 1
+        },
+        {
+          "name": "Kyren Williams",
+          "tests": 1
+        },
+        {
+          "name": "Laquon Treadwell",
+          "tests": 1
+        },
+        {
+          "name": "Luther Burden III",
+          "tests": 1
+        },
+        {
+          "name": "Makai Lemon",
+          "tests": 1
+        },
+        {
+          "name": "Malachi Fields",
+          "tests": 1
+        },
+        {
+          "name": "Malik Nabers",
+          "tests": 1
+        },
+        {
+          "name": "Mark Andrews",
+          "tests": 1
+        },
+        {
+          "name": "Matthew Golden",
+          "tests": 1
+        },
+        {
+          "name": "Michael Mayer",
+          "tests": 1
+        },
+        {
+          "name": "Michael Wilson",
+          "tests": 1
+        },
+        {
+          "name": "Oronde Gadsden II",
+          "tests": 1
+        },
+        {
+          "name": "Parker Washington",
+          "tests": 1
+        },
+        {
+          "name": "Pat Freiermuth",
+          "tests": 1
+        },
+        {
+          "name": "Rashid Shaheed",
+          "tests": 1
+        },
+        {
+          "name": "Rashod Bateman",
+          "tests": 1
+        },
+        {
+          "name": "Rhamondre Stevenson",
+          "tests": 1
+        },
+        {
+          "name": "Rome Odunze",
+          "tests": 1
+        },
+        {
+          "name": "Romeo Doubs",
+          "tests": 1
+        },
+        {
+          "name": "Ryan Flournoy",
+          "tests": 1
+        },
+        {
+          "name": "Tre Tucker",
+          "tests": 1
+        },
+        {
+          "name": "Trey McBride",
+          "tests": 1
+        },
+        {
+          "name": "Tucker Kraft",
+          "tests": 1
+        },
+        {
+          "name": "Tyjae Spears",
+          "tests": 1
+        },
+        {
+          "name": "Wan'Dale Robinson",
+          "tests": 1
+        },
+        {
+          "name": "Xavier Hutchinson",
+          "tests": 1
+        }
+      ],
+      "brier": 0.2496,
+      "constant50Brier": 0.25,
+      "overRate": 0.519,
+      "beatsConstant50": true,
+      "status": "SMALL_SAMPLE",
       "bins": [
         {
           "range": "0.0-0.2",
-          "count": 20,
-          "meanForecast": 0.139,
-          "observedRate": 0.2
+          "count": 6,
+          "meanForecast": 0.167,
+          "observedRate": 0.167
         },
         {
           "range": "0.2-0.4",
-          "count": 58,
-          "meanForecast": 0.309,
-          "observedRate": 0.414
+          "count": 38,
+          "meanForecast": 0.313,
+          "observedRate": 0.447
         },
         {
           "range": "0.4-0.6",
-          "count": 40,
-          "meanForecast": 0.486,
-          "observedRate": 0.6
+          "count": 34,
+          "meanForecast": 0.488,
+          "observedRate": 0.676
         },
         {
           "range": "0.6-0.8",
