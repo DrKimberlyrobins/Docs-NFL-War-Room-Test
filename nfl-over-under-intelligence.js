@@ -105,8 +105,11 @@ function render(root,name,team){
   const validPrice=price!==null&&Number.isInteger(price)&&Math.abs(price)>=100;
   const forecast=threshold!==null?estimate(values.slice(0,10),threshold,side.value):null;
   const breakEven=validPrice?be(price):null;
-  const edge=forecast&&breakEven!==null?forecast.p-breakEven:null;\n  const marketAudit=audit?.markets?.[key];\n  const enoughValidation=marketAudit&&marketAudit.predictions>=100&&marketAudit.brier<.22;\n  const grade=(!validPrice||threshold===null||values.length<5)?"PASS — insufficient verified inputs":(!enoughValidation?"REVIEW — backtest not sufficiently validated":(edge!==null&&edge>=.12&&values.slice(0,5).filter(x=>side.value==="OVER"?x>threshold:x<threshold).length>=4?"CANDIDATE — requires sportsbook and opponent verification":"PASS — edge or trend below threshold"));
-  output.textContent="Season player appearances with "+key+": "+games.length+"\nLast 5: "+sample(5)+"\nLast 10: "+sample(10)+"\nGame-by-game (newest first): "+(games.slice(0,10).map(g=>"W"+g.week+" "+g[key]).join(" | ")||"none")+"\nRecent average (last "+Math.min(10,values.length)+"): "+(values.length?(values.slice(0,10).reduce((a,b)=>a+b,0)/Math.min(10,values.length)).toFixed(2):"unavailable")+"\nSportsbook break-even: "+(breakEven!==null?pct(breakEven):"enter verified odds")+"\nExploratory model "+side.value+" estimate: "+(forecast?pct(forecast.p):"at least 5 verified player games needed")+"\nExploratory model minus break-even: "+(edge!==null?(100*edge).toFixed(1)+" percentage points":"unavailable")+"\nOpponent defensive adjustment: not established\nModel validation: NOT BACKTESTED\nGRADE: REVIEW ONLY — no automatic QUALIFIED designation or Sheets save.";
+  const edge=forecast&&breakEven!==null?forecast.p-breakEven:null;
+  const marketAudit=audit?.markets?.[key];
+  const enoughValidation=marketAudit&&marketAudit.predictions>=100&&marketAudit.brier<.22;
+  const grade=(!validPrice||threshold===null||values.length<5)?"PASS — insufficient verified inputs":(!enoughValidation?"REVIEW — backtest not sufficiently validated":(edge!==null&&edge>=.12&&values.slice(0,5).filter(x=>side.value==="OVER"?x>threshold:x<threshold).length>=4?"CANDIDATE — requires sportsbook and opponent verification":"PASS — edge or trend below threshold"));
+  output.textContent="Season player appearances with "+key+": "+games.length+"\nLast 5: "+sample(5)+"\nLast 10: "+sample(10)+"\nGame-by-game (newest first): "+(games.slice(0,10).map(g=>"W"+g.week+" "+g[key]).join(" | ")||"none")+"\nRecent average (last "+Math.min(10,values.length)+"): "+(values.length?(values.slice(0,10).reduce((a,b)=>a+b,0)/Math.min(10,values.length)).toFixed(2):"unavailable")+"\nSportsbook break-even: "+(breakEven!==null?pct(breakEven):"enter verified odds")+"\nExploratory model "+side.value+" estimate: "+(forecast?pct(forecast.p):"at least 5 verified player games needed")+"\nExploratory model minus break-even: "+(edge!==null?(100*edge).toFixed(1)+" percentage points":"unavailable")+"\nOpponent defensive adjustment: not established\nWalk-forward audit: "+(marketAudit?marketAudit.predictions+" tests, Brier "+marketAudit.brier:"pending")+"\nGRADE: "+grade+"\nQUALIFIED/Sheets save: disabled pending real sportsbook-line validation.";
  }
  [market,line,odds,side].forEach(el=>el.addEventListener("input",recalc));recalc();
 }
@@ -122,7 +125,8 @@ const overlay=document.getElementById("playerIntelOverlay");if(overlay)new Mutat
 document.addEventListener("click",e=>{if(e.target.closest?.(".player-intel-link"))queueMicrotask(ensure)});
 Promise.allSettled([fetch("data/player-game-logs-2026.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("HTTP "+r.status);return r.json()}),fetch("data/kambi-player-props-2026.json",{cache:"no-store"}).then(r=>r.json()),fetch("data/player-model-audit-2026.json",{cache:"no-store"}).then(r=>r.json())]).then(([a,b,d])=>{
  if(a.status==="fulfilled"&&Array.isArray(a.value.players))logs=a.value;else loadError="Weekly logs have not been generated successfully.";
- if(b.status==="fulfilled"&&Array.isArray(b.value?.props))quotes=b.value;\n if(d.status==="fulfilled"&&d.value?.markets)audit=d.value;
+ if(b.status==="fulfilled"&&Array.isArray(b.value?.props))quotes=b.value;
+ if(d.status==="fulfilled"&&d.value?.markets)audit=d.value;
  active="";ensure();
 });
 })();
