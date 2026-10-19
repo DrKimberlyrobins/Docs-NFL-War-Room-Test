@@ -21,7 +21,7 @@ function breakEven(odds){return odds>0?100/(odds+100):(-odds)/((-odds)+100)}
 function lookup(name,team){
  if(!dataset?.players)return null;
  const normalized=s=>String(s||"").toLowerCase().replace(/[^a-z]/g,"");
- return dataset.players.find(p=>normalized(p.name)===normalized(name)&&(!team||normalized(p.team)===normalized(team)))||null;
+ return dataset.players.find(p=>(normalized(p.name)===normalized(name)||normalized(p.shortName)===normalized(name)||normalized(p.name).endsWith(normalized(name)))&&(!team||normalized(p.team)===normalized(team)|| (typeof playerTeamCodes!=="undefined"&&normalized(p.team)===normalized(playerTeamCodes[team]))))||null;
 }
 function draw(root,name,team){
  root.replaceChildren();
