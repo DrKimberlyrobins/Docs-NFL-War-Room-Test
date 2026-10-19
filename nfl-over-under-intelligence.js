@@ -11,7 +11,7 @@ const norm=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"");
 const val=x=>x==null||String(x).trim()===""?null:Number.isFinite(Number(x))?Number(x):null;
 const pct=n=>(100*n).toFixed(1)+"%";
 const be=o=>o>0?100/(100+o):(-o)/(100-o);
-const erf=x=>{const s=Math.sign(x),a=Math.abs(x),t=1/(1+.3275911*a);return s*(1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t)*Math.exp(-a*a))};
+const erf=x=>{const sign=x<0?-1:1,z=Math.abs(x),t=1/(1+.3275911*z);const poly=(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t;return sign*(1-poly*Math.exp(-z*z));};
 const cdf=x=>.5*(1+erf(x/Math.SQRT2));
 const styles=document.createElement("style");styles.textContent=".doc-ou{margin-top:16px;padding:15px;border:1px solid #36516b;border-radius:10px;background:#10243a}.doc-ou h3{color:#35df93;margin:0 0 8px}.doc-ou-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:9px}.doc-ou input,.doc-ou select{width:100%;padding:9px;margin:5px 0 10px;background:#edf3fa;color:#111;border:0;border-radius:6px}.doc-ou label{font-size:13px}.doc-ou .result{white-space:pre-wrap;line-height:1.65}.doc-ou .warning{color:#ffd184}";document.head.append(styles);
 let logs=null,quotes=null,audit=null,loadError="",active="";
