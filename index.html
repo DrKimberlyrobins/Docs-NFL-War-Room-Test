@@ -687,7 +687,7 @@ grid.appendChild(stat);
 const status=document.getElementById("playerIntelStatus");
 status.replaceChildren();
 const heading=document.createElement("strong");
-heading.textContent="Qualified markets";
+heading.textContent="Player prop evaluation";
 status.appendChild(heading);
 
 const explicit=plain(row.dataset.qualifiedMarkets||"");
@@ -708,7 +708,7 @@ status.appendChild(list);
 }else{
 const message=document.createElement("p");
 message.textContent=
-"No verified qualification found — PASS / REVIEW.";
+"No verified QUALIFIED markets yet. Review player game logs and current sportsbook lines before approving a play.";
 status.appendChild(message);
 }
 
