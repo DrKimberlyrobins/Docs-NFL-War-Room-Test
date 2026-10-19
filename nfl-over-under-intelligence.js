@@ -39,10 +39,31 @@ function marketGuess(raw){
 }
 function availableQuotes(player){
  if(!Array.isArray(quotes?.props))return [];
- return quotes.props.filter(q=>{
-  const name=q.playerName||q.player||q.participant||q.name||"";
-  return norm(name)===norm(player.name)||norm(name)===norm(player.shortName);
- }).map(q=>({market:marketGuess(q.marketName||q.market||q.betOfferType||""),line:val(q.line??q.handicap??q.points),odds:val(q.oddsAmerican??q.americanOdds??q.odds),source:q})).filter(q=>q.market&&q.line!==null);
+ const playerNames=[player.name,player.shortName].filter(Boolean);
+ const exact=p=>playerNames.some(n=>norm(n)===norm(p));
+ const parsed=[];
+ for(const q of quotes.props){
+  const name=q.player??q.playerName??q.participant??q.participantName??"";
+  if(!exact(name))continue;
+  const status=String(q.status??q.outcomeStatus??"OPEN").toUpperCase();
+  if(status!=="OPEN"&&status!=="ACTIVE")continue;
+  const descriptor=[q.category,q.categoryName,q.market,q.marketName,q.marketLabel,q.displayMarket,q.outcome,q.outcomeLabel,q.label].filter(Boolean).join(" ");
+  if(/first half|1st half/i.test(descriptor))continue;
+  const market=marketGuess(descriptor);
+  if(!market)continue;
+  let line=val(q.line??q.threshold);
+  if(line===null){
+   const text=[q.milestone,q.outcomeLabel,q.displayMarket,q.marketLabel].filter(Boolean).join(" ");
+   const m=text.match(/(\\d+(?:\\.\\d+)?)\\s*\\+/);
+   if(m)line=Number(m[1])-.5;
+  }
+  const odds=val(q.oddsAmerican??q.americanOdds??q.priceAmerican??q.price);
+  const outcomeText=String(q.outcome??q.outcomeLabel??q.label??"").toLowerCase();
+  const side=/\\bover\\b|\\d+\\s*\\+/.test(outcomeText)?"OVER":/\\bunder\\b/.test(outcomeText)?"UNDER":null;
+  if(line===null||!Number.isInteger(odds)||Math.abs(odds)<100||!side)continue;
+  parsed.push({market,line,odds,side,source:q});
+ }
+ return parsed;
 }
 function estimate(values,threshold,side){
  // Normal approximation, with conservative variance floor to avoid false certainty.
@@ -75,7 +96,7 @@ function render(root,name,team){
  const note=document.createElement("p");note.className="note";note.textContent=quotesFound.length?"Kambi snapshot contains "+quotesFound.length+" possible player-market records; confirm prices and market side before use.":"No usable auto-matched Kambi prices. Enter a verified sportsbook line and odds.";root.append(note);
  const output=document.createElement("div");output.className="result";root.append(output);
  const quoteBtn=document.createElement("button");quoteBtn.type="button";quoteBtn.textContent="Use matching Kambi snapshot (if available)";quoteBtn.style.marginTop="5px";root.append(quoteBtn);
- quoteBtn.addEventListener("click",()=>{const q=quotesFound.find(x=>x.market===market.value&&x.odds!==null);if(!q){note.textContent="No matching market with American odds in the saved Kambi snapshot.";return;}line.value=q.line;odds.value=q.odds;recalc();});
+ quoteBtn.addEventListener("click",()=>{const q=quotesFound.find(x=>x.market===market.value&&x.side===side.value);if(!q){note.textContent="No matching market with American odds in the saved Kambi snapshot.";return;}line.value=q.line;odds.value=q.odds;note.textContent="Kambi saved snapshot loaded; verify freshness before using. Market: "+q.market+" "+q.side+" "+q.line+" at "+q.odds;recalc();});
  function recalc(){
   const threshold=val(line.value),price=val(odds.value),key=market.value;
   const games=(player.games||[]).filter(g=>Number.isInteger(g.week)&&val(g[key])!==null).sort((a,b)=>b.week-a.week);
@@ -101,7 +122,7 @@ const overlay=document.getElementById("playerIntelOverlay");if(overlay)new Mutat
 document.addEventListener("click",e=>{if(e.target.closest?.(".player-intel-link"))queueMicrotask(ensure)});
 Promise.allSettled([fetch("data/player-game-logs-2026.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("HTTP "+r.status);return r.json()}),fetch("data/kambi-player-props-2026.json",{cache:"no-store"}).then(r=>r.json())]).then(([a,b])=>{
  if(a.status==="fulfilled"&&Array.isArray(a.value.players))logs=a.value;else loadError="Weekly logs have not been generated successfully.";
- if(b.status==="fulfilled")quotes=b.value;
+ if(b.status==="fulfilled"&&Array.isArray(b.value?.props))quotes=b.value;
  active="";ensure();
 });
 })();
