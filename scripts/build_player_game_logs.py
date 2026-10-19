@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 SEASON=2026
-URL="https://github.com/nflverse/nflverse-data/releases/download/player_stats/player_stats.csv"
+URL="https://github.com/nflverse/nflverse-data/releases/download/stats_player/stats_player_week_2026.csv"
 FIELDS={"passingYards":"passing_yards","completions":"completions","attempts":"attempts","rushingYards":"rushing_yards","carries":"carries","receivingYards":"receiving_yards","receptions":"receptions","targets":"targets"}
 def num(s):
     try:
@@ -19,14 +19,14 @@ def build():
     request=urllib.request.Request(URL,headers={"User-Agent":"Docs-NFL-War-Room/1.0"})
     with urllib.request.urlopen(request,timeout=90) as response:
         reader=csv.DictReader(io.TextIOWrapper(response,encoding="utf-8-sig"))
-        required={"season","week","season_type","player_id","player_name","recent_team"}|set(FIELDS.values())
+        required={"season","week","season_type","player_id","player_name","team"}|set(FIELDS.values())
         missing=required-set(reader.fieldnames or [])
         if missing: raise RuntimeError("Source schema missing columns: "+", ".join(sorted(missing)))
         players={}
         for r in reader:
             if r["season"]!=str(SEASON) or r["season_type"]!="REG": continue
             pid=r["player_id"].strip()
-            team=r["recent_team"].strip()
+            team=r["team"].strip()
             week=num(r["week"])
             if not pid or not team or not isinstance(week,int): continue
             name=(r.get("player_display_name") or r["player_name"]).strip()
