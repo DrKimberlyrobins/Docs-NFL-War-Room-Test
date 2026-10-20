@@ -67,7 +67,7 @@ function availableQuotes(player){
 }
 function estimate(values,threshold,side){
  // Normal approximation, with conservative variance floor to avoid false certainty.
- if(values.length<5)return null;
+ if(values.length<3)return null;
  const n=values.length,mean=values.reduce((a,b)=>a+b,0)/n;
  const variance=values.reduce((a,b)=>a+(b-mean)**2,0)/Math.max(1,n-1);
  const sd=Math.max(Math.sqrt(variance),Math.sqrt(Math.max(1,mean))*.7,1);
@@ -108,9 +108,11 @@ function render(root,name,team){
   const breakEven=validPrice?be(price):null;
   const edge=forecast&&breakEven!==null?forecast.p-breakEven:null;
   const marketAudit=audit?.markets?.[key];
-  const enoughValidation=marketAudit&&marketAudit.predictions>=100&&marketAudit.beatsConstant50===true&&marketAudit.status==="EXPLORATORY";
-  const grade=(!validPrice||threshold===null||values.length<5)?"PASS — insufficient verified inputs":(!enoughValidation?"REVIEW — backtest not sufficiently validated":(edge!==null&&edge>=.12&&values.slice(0,5).filter(x=>side.value==="OVER"?x>threshold:x<threshold).length>=4?"CANDIDATE — requires sportsbook and opponent verification":"PASS — edge or trend below threshold"));
-  output.textContent="Season player appearances with "+key+": "+games.length+"\nLast 5: "+sample(5)+"\nLast 10: "+sample(10)+"\nGame-by-game (newest first): "+(games.slice(0,10).map(g=>"W"+g.week+" "+g[key]).join(" | ")||"none")+"\nRecent average (last "+Math.min(10,values.length)+"): "+(values.length?(values.slice(0,10).reduce((a,b)=>a+b,0)/Math.min(10,values.length)).toFixed(2):"unavailable")+"\nSportsbook break-even: "+(breakEven!==null?pct(breakEven):"enter verified odds")+"\nExploratory model "+side.value+" estimate: "+(forecast?pct(forecast.p):"at least 5 verified player games needed")+"\nExploratory model minus break-even: "+(edge!==null?(100*edge).toFixed(1)+" percentage points":"unavailable")+"\nOpponent defensive adjustment: not established\nWalk-forward audit: "+(marketAudit?marketAudit.predictions+" tests, Brier "+marketAudit.brier:"pending")+"\nGRADE: "+grade+"\nQUALIFIED/Sheets save: disabled pending real sportsbook-line validation.";
+  const recent=values.slice(0,3);
+  const hits=threshold===null?0:recent.filter(x=>side.value==="OVER"?x>threshold:x<threshold).length;
+  const trendQualified=validPrice&&threshold!==null&&recent.length===3&&hits===3&&edge!==null&&edge>=.12;
+  const grade=(!validPrice||threshold===null||recent.length<3)?"PASS — need 3 games and verified line/odds":trendQualified?"3-GAME TREND QUALIFIED — exploratory, NOT sportsbook-validated":"PASS — 3-game trend or estimated edge below threshold";
+  output.textContent="Season player appearances with "+key+": "+games.length+"\nLast 5: "+sample(5)+"\nLast 10: "+sample(10)+"\nGame-by-game (newest first): "+(games.slice(0,10).map(g=>"W"+g.week+" "+g[key]).join(" | ")||"none")+"\nRecent average (last "+Math.min(10,values.length)+"): "+(values.length?(values.slice(0,10).reduce((a,b)=>a+b,0)/Math.min(10,values.length)).toFixed(2):"unavailable")+"\nSportsbook break-even: "+(breakEven!==null?pct(breakEven):"enter verified odds")+"\nExploratory model "+side.value+" estimate: "+(forecast?pct(forecast.p):"at least 3 verified player games needed")+"\nExploratory model minus break-even: "+(edge!==null?(100*edge).toFixed(1)+" percentage points":"unavailable")+"\nOpponent defensive adjustment: not established\nWalk-forward audit: "+(marketAudit?marketAudit.predictions+" tests, Brier "+marketAudit.brier:"pending")+"\nGRADE: "+grade+"\n3-game trend qualification is NOT validated betting edge. Sheets auto-save disabled until sportsbook-line validation.";
  }
  [market,line,odds,side].forEach(el=>el.addEventListener("input",recalc));recalc();
 }
