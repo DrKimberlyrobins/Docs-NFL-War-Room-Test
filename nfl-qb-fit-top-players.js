@@ -1,7 +1,10 @@
 /* QB context + top players: research only, verified aggregates. */
 (()=>{"use strict";
 const codes={"Arizona Cardinals":"ARI","Atlanta Falcons":"ATL","Baltimore Ravens":"BAL","Buffalo Bills":"BUF","Carolina Panthers":"CAR","Chicago Bears":"CHI","Cincinnati Bengals":"CIN","Cleveland Browns":"CLE","Dallas Cowboys":"DAL","Denver Broncos":"DEN","Detroit Lions":"DET","Green Bay Packers":"GB","Houston Texans":"HOU","Indianapolis Colts":"IND","Jacksonville Jaguars":"JAX","Kansas City Chiefs":"KC","Las Vegas Raiders":"LV","Los Angeles Chargers":"LAC","Los Angeles Rams":"LA","Miami Dolphins":"MIA","Minnesota Vikings":"MIN","New England Patriots":"NE","New Orleans Saints":"NO","New York Giants":"NYG","New York Jets":"NYJ","Philadelphia Eagles":"PHI","Pittsburgh Steelers":"PIT","San Francisco 49ers":"SF","Seattle Seahawks":"SEA","Tampa Bay Buccaneers":"TB","Tennessee Titans":"TEN","Washington Commanders":"WAS"};
-let data=null;
+let data=null, rushingLogs=null;
+const normalize=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+function qbRush(teamCode,qb){if(!rushingLogs||!qb)return null;const passGames=new Set(rushingLogs.filter(x=>x.team===teamCode&&x.category==='passing'&&normalize(x.player)===normalize(qb.name)).map(x=>x.gameId));const rush=rushingLogs.filter(x=>x.team===teamCode&&x.category==='rushing'&&normalize(x.player)===normalize(qb.name));const games=passGames.size||new Set(rush.map(x=>x.gameId)).size;if(!games)return null;const yards=rush.reduce((a,x)=>a+(Number(x.yards)||0),0),attempts=rush.reduce((a,x)=>a+(Number(x.opportunities)||0),0);return {games,attempts,yards,attemptsPerGame:attempts/games,yardsPerGame:yards/games};}
+function rushDescription(teamCode,qb){const r=qbRush(teamCode,qb);return r?'QB rush: '+fmt(r.attemptsPerGame)+' attempts/game, '+fmt(r.yardsPerGame)+' yards/game ('+r.games+' observed QB passing games; includes scrambles and kneels where recorded).':'QB rush: no verified QB game-log match';}
 const num=x=>Number.isFinite(Number(x))?Number(x):null;
 const fmt=x=>num(x)===null?"—":Number(x).toFixed(1);
 function qbFor(team){return [...(team?.quarterbacks||[])].sort((a,b)=>(b.attempts||0)-(a.attempts||0))[0]}
@@ -10,10 +13,11 @@ const qb=qbFor(team),games=num(team?.games);
 if(!qb||!games)return {label:"QB data unavailable",detail:"Cannot assess compatibility without verified quarterback statistics."};
 const attempts=(qb.attempts||0)/games;
 const qbName=qb.name;
+const rush=rushDescription(Object.keys(data?.teams||{}).find(k=>data.teams[k]===team),qb);
 const volume=attempts>=35?"high passing volume":attempts>=27?"moderate passing volume":"lower passing volume";
-let detail=qbName+" leads recorded pass attempts ("+fmt(attempts)+"/team game; "+volume+"). ";
+let detail=qbName+" leads recorded pass attempts ("+fmt(attempts)+"/team game; "+volume+"). "+rush+". ";
 if(type==="WR")detail+="Player targets: "+fmt(player.targetsPerGame)+" per team game. Target volume is relevant to receiving props, but QB-to-player targets and starter confirmation are not yet verified.";
-else detail+="Player carries: "+fmt(player.carriesPerGame)+"/game. QB rushing share, designed runs, and scrambles are not available in this dataset; rushing compatibility cannot be rated.";
+else detail+="Player carries: "+fmt(player.carriesPerGame)+"/game. QB rush attempts and yards are shown above; designed runs versus scrambles are not separated, so rushing compatibility cannot yet be rated.";
 return {label:"QB context: "+volume+" (not a fit grade)",detail};
 }
 function line(parent,txt,tag="p"){const e=document.createElement(tag);e.textContent=txt;parent.appendChild(e);return e}
@@ -25,7 +29,7 @@ if(!data){line(host,"Loading verified player statistics...");return;}
 line(host,"Research shortlist by recorded opportunity, not prop qualification. QB listed by most team pass attempts, not confirmed starter. Data updated: "+(data.updated||"unknown")+".").style.cssText="font-size:12px;color:#cbd5e1";
 for(const id of ["away","home"]){const name=document.getElementById(id)?.value;const team=data.teams?.[codes[name]];if(!team){line(host,name+": verified data unavailable");continue;}
 line(host,name,"h3");
-const qb=qbFor(team);line(host,qb?"QB passing context: "+qb.name+" — "+fmt(qb.attempts/team.games)+" attempts/team game. QB rush tendency not yet verified.":"QB context unavailable.");
+const qb=qbFor(team);line(host,qb?"QB passing context: "+qb.name+" — "+fmt(qb.attempts/team.games)+" attempts/team game. ${rushDescription(codes[name],qb)}.":"QB context unavailable.");
 const wr=[...(team.receivers||[])].sort((a,b)=>(b.targetsPerGame||0)-(a.targetsPerGame||0)).slice(0,2);
 const rb=[...(team.rushers||[])].sort((a,b)=>(b.carriesPerGame||0)-(a.carriesPerGame||0)).slice(0,2);
 wr.forEach(p=>card(host,name,p,"WR",team));rb.forEach(p=>card(host,name,p,"RB",team));
@@ -44,6 +48,7 @@ const obs=new MutationObserver(()=>{if(document.getElementById("playerIntelOverl
 function init(){const anchor=document.querySelector(".panel h2");const panel=document.createElement("section");panel.className="panel";panel.id="docsTopPlayers";const scoring=[...document.querySelectorAll(".panel h2")].find(x=>x.textContent.includes("Scoring Prediction Engine"));if(scoring)scoring.closest(".panel").insertAdjacentElement("beforebegin",panel);else anchor?.closest(".panel")?.insertAdjacentElement("afterend",panel);
 obs.observe(document.getElementById("playerIntelOverlay"),{attributes:true,attributeFilter:["hidden"]});
 const old=window.analyze;window.analyze=function(...args){if(typeof old==="function")old.apply(this,args);render()};
+fetch("data/player-gamelogs-2026.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("HTTP "+r.status);return r.json()}).then(d=>{rushingLogs=d.logs;render()}).catch(()=>{rushingLogs=null;render()});
 fetch("data/players-2026.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw Error("HTTP "+r.status);return r.json()}).then(d=>{data=d;render()}).catch(e=>{panel.textContent="Top players unavailable: "+e.message});
 render();}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
