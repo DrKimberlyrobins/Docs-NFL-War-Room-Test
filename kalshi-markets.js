@@ -114,7 +114,7 @@
             <th>YES Ask</th>
             <th>Player Average</th>
             <th>Historical Rate</th>
-            <th>Rate - Price</th>
+            <th>Historical Rate − Ask (pp)</th>
             <th>Spread</th>
             <th>Volume</th>
           </tr>
@@ -129,7 +129,7 @@
       recorded games. Missing zero-opportunity games
       may affect the results. Rate - Price is a
       mathematical comparison, not a verified betting edge.
-      Market prices may be delayed.
+      pp = percentage points, not profit or a verified edge.\n      Example: 80% historical hits − 5¢ YES ask = +75 pp.\n      Market prices may be delayed.
     </p>
   `;
 
@@ -630,12 +630,17 @@
       rows.appendChild(tr);
     });
 
+    const ageHours = (Date.now() - Date.parse(updated)) / 3600000;
+    const freshness = Number.isFinite(ageHours)
+      ? (ageHours > 24 ? " | STALE MARKET DATA (" + Math.floor(ageHours) + " hours old)" : " | Market snapshot age: " + ageHours.toFixed(1) + "h")
+      : " | Market age unknown";
+    status.style.color = Number.isFinite(ageHours) && ageHours > 24 ? "#ffca70" : "#ffffff";
     status.textContent =
       matching.length.toLocaleString() +
       " matching contracts | " +
       Math.min(matching.length, 100) +
       " displayed | Updated: " +
-      updated;
+      updated + freshness;
 
     if (!matching.length) {
       const tr = document.createElement("tr");

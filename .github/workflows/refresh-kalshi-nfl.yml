@@ -1,0 +1,39 @@
+name: Refresh Kalshi NFL market snapshot
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '10 */6 * * *'
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install requests
+        run: pip install requests
+      - name: Fetch verified Kalshi markets
+        run: python scripts/update_kalshi.py
+      - name: Validate and commit only complete snapshot
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('data/kalshi-markets.json')
+          d=json.loads(p.read_text())
+          assert d.get('source')=='Kalshi'
+          assert not d.get('errors'), 'Partial Kalshi fetch'
+          assert d.get('series') and d.get('markets'), 'Empty Kalshi snapshot'
+          assert all(m.get('ticker') for m in d['markets']), 'Market ticker missing'
+          print('Validated',len(d['markets']),'markets')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kalshi-markets.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh verified Kalshi NFL snapshot"
+            git push
+          fi
