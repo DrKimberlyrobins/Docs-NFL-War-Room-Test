@@ -13,6 +13,8 @@
 (() => {
   "use strict";
 
+  let publishedV2 = null;
+  let publishedMeta = null;
   const snapshots = [
     ["TEN", "IND", "IND", 69.1, 73.3],
     ["CAR", "PHI", "CAR", 75.8, 60.6],
@@ -177,6 +179,18 @@
       { color: "#ffffff", marginBottom: "16px" }
     ));
 
+    const live = publishedV2?.find(g => g.away === away && g.home === home);
+    if (live && Number.isFinite(Number(live.home_win_probability)) && Number.isFinite(Number(live.away_win_probability))) {
+      const row = element("div", undefined, {display:"flex",flexWrap:"wrap",gap:"12px",marginBottom:"14px"});
+      row.appendChild(metric("Trained V2 — " + names[away], Number(live.away_win_probability).toFixed(1)+"%", "#54e8a5"));
+      row.appendChild(metric("Trained V2 — " + names[home], Number(live.home_win_probability).toFixed(1)+"%", "#54e8a5"));
+      row.appendChild(metric("Sportsbook No-Vig", "Not available", "#ffffff"));
+      row.appendChild(metric("Improved V3", "Not trained", "#ffffff"));
+      output.appendChild(row);
+      output.appendChild(element("p", "Game date: " + live.date + " | Generated: " + (publishedMeta?.generated_utc || "unknown") + " | Feature cutoff: " + (live.feature_cutoff_date || "unknown"), {fontSize:"12px",color:"#c1d2e2"}));
+      output.appendChild(element("p", "Historical model snapshot, not live odds. Conditional on no tie. Predictions generated after kickoff are not verified pregame forecasts. No betting edge established.", {fontSize:"12px",color:"#c1d2e2"}));
+      return;
+    }
     const saved = findSnapshot(away, home);
 
     const row = element("div", undefined, {
@@ -348,6 +362,19 @@
     ));
   }
 
+  async function loadPublishedV2() {
+    try {
+      const response = await fetch("data/nfl-game-probabilities-2026.json", {cache:"no-store"});
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const payload = await response.json();
+      if (payload.model !== "pregame_logistic_v2" || !Array.isArray(payload.games)) throw new Error("Unexpected probability schema");
+      publishedV2 = payload.games;
+      publishedMeta = payload;
+      render();
+    } catch (error) {
+      console.warn("Trained V2 probabilities unavailable:", error);
+    }
+  }
   function init() {
     const away = document.getElementById("away");
     const home = document.getElementById("home");
@@ -412,6 +439,7 @@
     });
 
     render();
+    loadPublishedV2();
   }
 
   if (document.readyState === "loading") {
