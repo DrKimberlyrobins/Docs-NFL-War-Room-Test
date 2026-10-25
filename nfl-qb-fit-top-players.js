@@ -29,7 +29,7 @@ if(!data){line(host,"Loading verified player statistics...");return;}
 line(host,"Research shortlist by recorded opportunity, not prop qualification. QB listed by most team pass attempts, not confirmed starter. Data updated: "+(data.updated||"unknown")+".").style.cssText="font-size:12px;color:#cbd5e1";
 for(const id of ["away","home"]){const name=document.getElementById(id)?.value;const team=data.teams?.[codes[name]];if(!team){line(host,name+": verified data unavailable");continue;}
 line(host,name,"h3");
-const qb=qbFor(team);line(host,qb?"QB passing context: "+qb.name+" — "+fmt(qb.attempts/team.games)+" attempts/team game. ${rushDescription(codes[name],qb)}.":"QB context unavailable.");
+const qb=qbFor(team);line(host,qb?"QB passing context: "+qb.name+" — "+fmt(qb.attempts/team.games)+" attempts/team game. "+rushDescription(codes[name],qb)+". ":"QB context unavailable.");
 const wr=[...(team.receivers||[])].sort((a,b)=>(b.targetsPerGame||0)-(a.targetsPerGame||0)).slice(0,2);
 const rb=[...(team.rushers||[])].sort((a,b)=>(b.carriesPerGame||0)-(a.carriesPerGame||0)).slice(0,2);
 wr.forEach(p=>card(host,name,p,"WR",team));rb.forEach(p=>card(host,name,p,"RB",team));
