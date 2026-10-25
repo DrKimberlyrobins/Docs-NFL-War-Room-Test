@@ -21,12 +21,16 @@ else detail+="Player carries: "+fmt(player.carriesPerGame)+"/game. QB rush attem
 return {label:"QB context: "+volume+" (not a fit grade)",detail};
 }
 function line(parent,txt,tag="p"){const e=document.createElement(tag);e.textContent=txt;parent.appendChild(e);return e}
-function card(parent,teamName,p,type,team){const wrap=document.createElement("div");wrap.style.cssText="background:#20374c;border:1px solid #36516b;border-radius:9px;padding:12px;margin:9px 0";line(wrap,p.name+" — "+type,"strong");line(wrap,type==="WR"?"Targets/game: "+fmt(p.targetsPerGame)+" | Receptions/game: "+fmt(p.receptionsPerGame)+" | Receiving yards/game: "+fmt(p.yardsPerGame):"Carries/game: "+fmt(p.carriesPerGame)+" | Rushing yards/game: "+fmt(p.rushingYardsPerGame));const c=context(team,p,type);line(wrap,c.label);const info=line(wrap,c.detail);info.style.cssText="font-size:12px;color:#cbd5e1";parent.appendChild(wrap)}
+function card(parent,teamName,p,type,team){const wrap=document.createElement("div");wrap.style.cssText="background:#20374c;border:1px solid #36516b;border-radius:9px;padding:12px;margin:9px 0";line(wrap,p.name+" — "+type,"strong");line(wrap,type==="WR"?"Targets/game: "+fmt(p.targetsPerGame)+" | Receptions/game: "+fmt(p.receptionsPerGame)+" | Receiving yards/game: "+fmt(p.yardsPerGame):"Carries/game: "+fmt(p.carriesPerGame)+" | Rushing yards/game: "+fmt(p.rushingYardsPerGame));const c=context(team,p,type);
+const qb=qbFor(team), passVolume=qb&&team.games?Number(qb.attempts)/Number(team.games):0;
+const highPass=type==="WR"&&passVolume>=35&&Number(p.targetsPerGame)>=7;
+if(highPass){wrap.style.border="2px solid #35df93";wrap.style.boxShadow="0 0 0 1px rgba(53,223,147,.25)";const badge=line(wrap,"🟢 HIGH PASSING-VOLUME OPPORTUNITY — QB "+fmt(passVolume)+" attempts/team game; WR "+fmt(p.targetsPerGame)+" targets/game","strong");badge.style.cssText="display:block;color:#7cf5ba;margin:8px 0";}else if(type==="WR"&&passVolume>=35){const badge=line(wrap,"PASS-HEAVY QB — receiver target volume below highlight threshold","small");badge.style.cssText="display:block;color:#cbd5e1;margin:6px 0";}
+line(wrap,c.label);const info=line(wrap,c.detail);info.style.cssText="font-size:12px;color:#cbd5e1";parent.appendChild(wrap)}
 function render(){
 const host=document.getElementById("docsTopPlayers");if(!host)return;
 host.replaceChildren();line(host,"TOP PLAYERS — QB CONTEXT","h2");
 if(!data){line(host,"Loading verified player statistics...");return;}
-line(host,"Research shortlist by recorded opportunity, not prop qualification. QB listed by most team pass attempts, not confirmed starter. Data updated: "+(data.updated||"unknown")+".").style.cssText="font-size:12px;color:#cbd5e1";
+line(host,"Research shortlist by recorded opportunity, not prop qualification. Green highlights receivers with QB passing volume ≥35 attempts/team game AND receiver targets ≥7/team game; not a qualified bet. QB listed by most team pass attempts, not confirmed starter. Data updated: "+(data.updated||"unknown")+".").style.cssText="font-size:12px;color:#cbd5e1";
 for(const id of ["away","home"]){const name=document.getElementById(id)?.value;const team=data.teams?.[codes[name]];if(!team){line(host,name+": verified data unavailable");continue;}
 line(host,name,"h3");
 const qb=qbFor(team);line(host,qb?"QB passing context: "+qb.name+" — "+fmt(qb.attempts/team.games)+" attempts/team game. "+rushDescription(codes[name],qb)+". ":"QB context unavailable.");
