@@ -25,12 +25,24 @@ function card(parent,teamName,p,type,team){const wrap=document.createElement("di
 const qb=qbFor(team), passVolume=qb&&team.games?Number(qb.attempts)/Number(team.games):0;
 const highPass=type==="WR"&&passVolume>=35&&Number(p.targetsPerGame)>=7;
 if(highPass){wrap.style.border="2px solid #35df93";wrap.style.boxShadow="0 0 0 1px rgba(53,223,147,.25)";const badge=line(wrap,"🟢 HIGH PASSING-VOLUME OPPORTUNITY — QB "+fmt(passVolume)+" attempts/team game; WR "+fmt(p.targetsPerGame)+" targets/game","strong");badge.style.cssText="display:block;color:#7cf5ba;margin:8px 0";}else if(type==="WR"&&passVolume>=35){const badge=line(wrap,"PASS-HEAVY QB — receiver target volume below highlight threshold","small");badge.style.cssText="display:block;color:#cbd5e1;margin:6px 0";}
+if(type==="RB"){
+const teamCode=codes[teamName],qr=qbRush(teamCode,qb);
+const carries=Number(p.carriesPerGame);
+if(qr&&Number.isFinite(carries)&&carries>=15&&qr.attemptsPerGame<=4){
+wrap.style.border="2px solid #60a5fa";wrap.style.boxShadow="0 0 0 1px rgba(96,165,250,.25)";
+const badge=line(wrap,"🔵 RB RUSHING OPPORTUNITY — "+fmt(carries)+" carries/game; QB "+fmt(qr.attemptsPerGame)+" rush attempts/game","strong");
+badge.style.cssText="display:block;color:#93c5fd;margin:8px 0";
+}else{
+const note=line(wrap,qr?"RB rushing highlight not met — RB "+fmt(carries)+" carries/game; QB "+fmt(qr.attemptsPerGame)+" rush attempts/game.":"RB rushing highlight pending — QB rushing log unavailable.","small");
+note.style.cssText="display:block;color:#cbd5e1;margin:6px 0";
+}
+}
 line(wrap,c.label);const info=line(wrap,c.detail);info.style.cssText="font-size:12px;color:#cbd5e1";parent.appendChild(wrap)}
 function render(){
 const host=document.getElementById("docsTopPlayers");if(!host)return;
 host.replaceChildren();line(host,"TOP PLAYERS — QB CONTEXT","h2");
 if(!data){line(host,"Loading verified player statistics...");return;}
-line(host,"Research shortlist by recorded opportunity, not prop qualification. Green highlights receivers with QB passing volume ≥35 attempts/team game AND receiver targets ≥7/team game; not a qualified bet. QB listed by most team pass attempts, not confirmed starter. Data updated: "+(data.updated||"unknown")+".").style.cssText="font-size:12px;color:#cbd5e1";
+line(host,"Research shortlist by recorded opportunity, not prop qualification. Green highlights receivers with QB passing volume ≥35 attempts/team game AND receiver targets ≥7/team game. Blue highlights rushers with ≥15 carries/game when the QB averages ≤4 rush attempts/game. Both are opportunity screens, not verified QB–RB chemistry or qualified bets. QB listed by most team pass attempts, not confirmed starter. Data updated: "+(data.updated||"unknown")+".").style.cssText="font-size:12px;color:#cbd5e1";
 for(const id of ["away","home"]){const name=document.getElementById(id)?.value;const team=data.teams?.[codes[name]];if(!team){line(host,name+": verified data unavailable");continue;}
 line(host,name,"h3");
 const qb=qbFor(team);line(host,qb?"QB passing context: "+qb.name+" — "+fmt(qb.attempts/team.games)+" attempts/team game. "+rushDescription(codes[name],qb)+". ":"QB context unavailable.");
