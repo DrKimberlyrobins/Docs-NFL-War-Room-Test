@@ -1,8 +1,8 @@
 {
   "model": "pregame_logistic_v2",
   "season": 2026,
-  "generated_utc": "2026-11-19T20:43:09.734390+00:00",
-  "feature_cutoff_date": "2026-11-19",
+  "generated_utc": "2026-11-20T20:27:21.203145+00:00",
+  "feature_cutoff_date": "2026-11-20",
   "games_count": 17,
   "probability_definition": "Binary win probability conditional on no tie",
   "source": "nflreadpy 2026 schedules and play-by-play",
@@ -15,30 +15,6 @@
     "Model v2 has not demonstrated a sportsbook edge."
   ],
   "games": [
-    {
-      "game_id": "2026_11_IND_HOU",
-      "date": "2026-11-19",
-      "week": 11,
-      "away": "IND",
-      "home": "HOU",
-      "model": "pregame_logistic_v2",
-      "home_win_probability": 69.66,
-      "away_win_probability": 30.34,
-      "model_favorite": "HOU",
-      "home_games_in_features": 8,
-      "away_games_in_features": 8,
-      "features": {
-        "off_epa_diff": 0.13605718539736406,
-        "def_epa_allowed_diff": 0.03380983728093312,
-        "points_for_diff": 5.875,
-        "points_allowed_diff": -1.75,
-        "home_games": 8.0,
-        "away_games": 8.0
-      },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
-      "status": "scheduled_check_kickoff"
-    },
     {
       "game_id": "2026_11_ARI_KC",
       "date": "2026-11-22",
@@ -59,8 +35,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -83,8 +59,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -107,8 +83,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -131,8 +107,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -155,8 +131,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -179,8 +155,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -203,8 +179,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -227,8 +203,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -251,8 +227,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -275,8 +251,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -299,8 +275,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -323,8 +299,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -347,8 +323,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -371,8 +347,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -395,8 +371,8 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     },
     {
@@ -419,8 +395,32 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-19",
-      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
+      "status": "scheduled_check_kickoff"
+    },
+    {
+      "game_id": "2026_12_DEN_PIT",
+      "date": "2026-11-27",
+      "week": 12,
+      "away": "DEN",
+      "home": "PIT",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 55.45,
+      "away_win_probability": 44.55,
+      "model_favorite": "PIT",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": 0.006519386779559374,
+        "def_epa_allowed_diff": 0.03857471293741187,
+        "points_for_diff": -1.25,
+        "points_allowed_diff": 1.75,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-20",
+      "snapshot_generated_utc": "2026-11-20T20:27:21.203145+00:00",
       "status": "scheduled_check_kickoff"
     }
   ]
