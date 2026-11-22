@@ -1,15 +1,15 @@
 {
   "model": "pregame_logistic_v2",
   "season": 2026,
-  "generated_utc": "2026-11-21T19:22:00.009400+00:00",
-  "feature_cutoff_date": "2026-11-21",
-  "games_count": 18,
+  "generated_utc": "2026-11-22T14:58:57.718762+00:00",
+  "feature_cutoff_date": "2026-11-22",
+  "games_count": 28,
   "probability_definition": "Binary win probability conditional on no tie",
   "source": "nflreadpy 2026 schedules and play-by-play",
   "notes": [
     "Trained model is unchanged.",
     "No results on or after cutoff date are used.",
-    "Predictions generated after kickoff are not valid timestamped pregame predictions.",
+    "Previously published pregame predictions are retained after kickoff.",
     "No sportsbook prices are included.",
     "No player-prop probabilities are included.",
     "Model v2 has not demonstrated a sportsbook edge."
@@ -43,6 +43,7 @@
     },
     {
       "game_id": "2026_11_ARI_KC",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "ARI",
@@ -61,14 +62,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-22T18:00:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_BAL_CAR",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "BAL",
@@ -87,14 +87,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-22T18:00:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_JAX_NYG",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "JAX",
@@ -113,14 +112,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-22T21:25:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_LV_DEN",
+      "kickoff_utc": "2026-11-22T21:25:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "LV",
@@ -139,14 +137,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-22T21:25:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_MIA_BUF",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "MIA",
@@ -165,14 +162,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-22T18:00:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_MIN_SF",
+      "kickoff_utc": "2026-11-23T01:20:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "MIN",
@@ -191,14 +187,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-23T01:20:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_NO_CHI",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "NO",
@@ -217,14 +212,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-22T18:00:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_NYJ_LAC",
+      "kickoff_utc": "2026-11-22T21:05:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "NYJ",
@@ -243,14 +237,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-22T21:05:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_PIT_PHI",
+      "kickoff_utc": "2026-11-22T21:25:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "PIT",
@@ -269,14 +262,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-22T18:00:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_TB_DET",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "TB",
@@ -295,14 +287,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-22T18:00:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_TEN_DAL",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
       "date": "2026-11-22",
       "week": 11,
       "away": "TEN",
@@ -321,14 +312,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-22T18:00:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_11_CIN_WAS",
+      "kickoff_utc": "2026-11-24T01:15:00+00:00",
       "date": "2026-11-23",
       "week": 11,
       "away": "CIN",
@@ -347,14 +337,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff",
-      "kickoff_utc": "2026-11-24T01:15:00+00:00",
-      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_12_GB_LA",
+      "kickoff_utc": "2026-11-26T01:00:00+00:00",
       "date": "2026-11-25",
       "week": 12,
       "away": "GB",
@@ -373,12 +362,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_12_CHI_DET",
+      "kickoff_utc": "2026-11-26T18:00:00+00:00",
       "date": "2026-11-26",
       "week": 12,
       "away": "CHI",
@@ -397,12 +387,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_12_KC_BUF",
+      "kickoff_utc": "2026-11-27T01:20:00+00:00",
       "date": "2026-11-26",
       "week": 12,
       "away": "KC",
@@ -421,12 +412,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_12_PHI_DAL",
+      "kickoff_utc": "2026-11-26T21:30:00+00:00",
       "date": "2026-11-26",
       "week": 12,
       "away": "PHI",
@@ -445,12 +437,13 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     },
     {
       "game_id": "2026_12_DEN_PIT",
+      "kickoff_utc": "2026-11-27T20:00:00+00:00",
       "date": "2026-11-27",
       "week": 12,
       "away": "DEN",
@@ -469,9 +462,259 @@
         "home_games": 8.0,
         "away_games": 8.0
       },
-      "feature_cutoff_date": "2026-11-21",
-      "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
+    },
+    {
+      "game_id": "2026_12_ATL_MIN",
+      "kickoff_utc": "2026-11-29T18:00:00+00:00",
+      "date": "2026-11-29",
+      "week": 12,
+      "away": "ATL",
+      "home": "MIN",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 47.54,
+      "away_win_probability": 52.46,
+      "model_favorite": "ATL",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": -0.09102884301850953,
+        "def_epa_allowed_diff": -0.19487140462669417,
+        "points_for_diff": -6.0,
+        "points_allowed_diff": -12.5,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
+    },
+    {
+      "game_id": "2026_12_BAL_HOU",
+      "kickoff_utc": "2026-11-29T18:00:00+00:00",
+      "date": "2026-11-29",
+      "week": 12,
+      "away": "BAL",
+      "home": "HOU",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 72.81,
+      "away_win_probability": 27.19,
+      "model_favorite": "HOU",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": 0.13695480257551457,
+        "def_epa_allowed_diff": -0.06987266717871377,
+        "points_for_diff": 8.875,
+        "points_allowed_diff": -5.75,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
+    },
+    {
+      "game_id": "2026_12_LV_CLE",
+      "kickoff_utc": "2026-11-30T01:20:00+00:00",
+      "date": "2026-11-29",
+      "week": 12,
+      "away": "LV",
+      "home": "CLE",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 50.59,
+      "away_win_probability": 49.41,
+      "model_favorite": "CLE",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": -0.04025637852979953,
+        "def_epa_allowed_diff": -0.12176330556952085,
+        "points_for_diff": -5.375,
+        "points_allowed_diff": -11.875,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
+    },
+    {
+      "game_id": "2026_12_NE_LAC",
+      "kickoff_utc": "2026-11-29T21:05:00+00:00",
+      "date": "2026-11-29",
+      "week": 12,
+      "away": "NE",
+      "home": "LAC",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 40.2,
+      "away_win_probability": 59.8,
+      "model_favorite": "NE",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": -0.15713179150625148,
+        "def_epa_allowed_diff": -0.10022280751498641,
+        "points_for_diff": -7.625,
+        "points_allowed_diff": -1.625,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
+    },
+    {
+      "game_id": "2026_12_NO_CIN",
+      "kickoff_utc": "2026-11-29T18:00:00+00:00",
+      "date": "2026-11-29",
+      "week": 12,
+      "away": "NO",
+      "home": "CIN",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 76.15,
+      "away_win_probability": 23.85,
+      "model_favorite": "CIN",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": 0.2010945977535871,
+        "def_epa_allowed_diff": -0.00183778512848168,
+        "points_for_diff": 9.125,
+        "points_allowed_diff": -4.875,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
+    },
+    {
+      "game_id": "2026_12_NYG_IND",
+      "kickoff_utc": "2026-11-29T18:00:00+00:00",
+      "date": "2026-11-29",
+      "week": 12,
+      "away": "NYG",
+      "home": "IND",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 44.58,
+      "away_win_probability": 55.42,
+      "model_favorite": "NYG",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": -0.1084896874925175,
+        "def_epa_allowed_diff": -0.0027190508587034007,
+        "points_for_diff": -4.5,
+        "points_allowed_diff": 3.75,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
+    },
+    {
+      "game_id": "2026_12_NYJ_MIA",
+      "kickoff_utc": "2026-11-29T18:00:00+00:00",
+      "date": "2026-11-29",
+      "week": 12,
+      "away": "NYJ",
+      "home": "MIA",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 50.58,
+      "away_win_probability": 49.42,
+      "model_favorite": "MIA",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": -0.05340953921841825,
+        "def_epa_allowed_diff": -0.04824365419341403,
+        "points_for_diff": -2.375,
+        "points_allowed_diff": -3.375,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
+    },
+    {
+      "game_id": "2026_12_SEA_SF",
+      "kickoff_utc": "2026-11-29T21:25:00+00:00",
+      "date": "2026-11-29",
+      "week": 12,
+      "away": "SEA",
+      "home": "SF",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 72.86,
+      "away_win_probability": 27.14,
+      "model_favorite": "SF",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": 0.1579707367397989,
+        "def_epa_allowed_diff": 0.07608200292883505,
+        "points_for_diff": 9.375,
+        "points_allowed_diff": 3.875,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
+    },
+    {
+      "game_id": "2026_12_TEN_JAX",
+      "kickoff_utc": "2026-11-29T18:00:00+00:00",
+      "date": "2026-11-29",
+      "week": 12,
+      "away": "TEN",
+      "home": "JAX",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 73.45,
+      "away_win_probability": 26.55,
+      "model_favorite": "JAX",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": 0.13526639471272678,
+        "def_epa_allowed_diff": -0.12257827824066253,
+        "points_for_diff": 9.75,
+        "points_allowed_diff": -10.25,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
+    },
+    {
+      "game_id": "2026_12_WAS_ARI",
+      "kickoff_utc": "2026-11-29T21:25:00+00:00",
+      "date": "2026-11-29",
+      "week": 12,
+      "away": "WAS",
+      "home": "ARI",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 50.21,
+      "away_win_probability": 49.79,
+      "model_favorite": "ARI",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": -0.03726353149898026,
+        "def_epa_allowed_diff": 0.07624971554010623,
+        "points_for_diff": -2.875,
+        "points_allowed_diff": 5.625,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-22",
+      "snapshot_generated_utc": "2026-11-22T14:58:57.718762+00:00",
+      "status": "pregame"
     }
   ]
 }

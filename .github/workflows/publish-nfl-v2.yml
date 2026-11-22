@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: pip install nflreadpy pandas pyarrow numpy scikit-learn joblib
+        run: pip install nflreadpy pandas pyarrow numpy scikit-learn==1.9.1 joblib
       - name: Restore last verified trained V2 artifact
         env:
           GH_TOKEN: ${{ github.token }}

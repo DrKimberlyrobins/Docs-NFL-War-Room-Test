@@ -135,9 +135,9 @@
     const week = event.week?.number ?? schedule.week;
     const away = teamCode(competitor(event, "away")?.abbreviation);
     const home = teamCode(competitor(event, "home")?.abbreviation);
-    const nflverseCode = code => code === "JAC" ? "JAX" : code;
+    const modelCodes = { JAC: "JAX", LAR: "LA" };
     return { season, week, away, home, id: [season, String(week).padStart(2, "0"),
-      nflverseCode(away), nflverseCode(home)].join("_") };
+      modelCodes[away] ?? away, modelCodes[home] ?? home].join("_") };
   }
 
   function savedPrediction(event, key) {
