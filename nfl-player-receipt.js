@@ -612,96 +612,28 @@
 
   function collectQuarterbacks() {
 
-    const rows =
-      getRows("qbPassingBody");
+    return ["away", "home"].flatMap(side => {
+      const teamName = document.getElementById(side)?.value;
+      const team = getSelectedTeam(side);
+      const stats = getQBTeamData(teamName);
+      if (!team || !stats || !(stats.games > 0)) return [];
 
-
-    return rows
-      .map(row => {
-
-        const team =
-          clean(row[0]).toUpperCase();
-
-        const attempts =
-          numberFrom(row[2]);
-
-        const attemptsPerGame =
-          numberFrom(row[5]);
-
-        const passingYards =
-          numberFrom(row[6]);
-
-        const yardsPerAttempt =
-          numberFrom(row[7]);
-
-        const passingTDs =
-          numberFrom(row[8]);
-
-        const interceptions =
-          numberFrom(row[9]);
-
-
-        let estimatedGames = 0;
-
-
-        if (
-          attempts > 0 &&
-          attemptsPerGame > 0
-        ) {
-
-          estimatedGames =
-            attempts /
-            attemptsPerGame;
-        }
-
-
-        const yardsPerGame =
-          estimatedGames > 0
-            ? passingYards /
-              estimatedGames
-            : 0;
-
-
-        return {
-          category: "QB",
-
+      return (stats.quarterbacks ?? [])
+        .filter(qb => qb.name &&
+          (qb.attempts >= 20 || qb.attemptsPerTeamGame >= 10) &&
+          [qb.attemptsPerTeamGame, qb.passingYards, qb.yardsPerAttempt,
+            qb.passingTDs, qb.interceptions].every(Number.isFinite))
+        .map(qb => ({
           team,
-
-          opponent:
-            opponentFor(team),
-
-          player:
-            clean(row[1]),
-
-          attempts,
-
-          completions:
-            numberFrom(row[3]),
-
-          completionPct:
-            numberFrom(row[4]),
-
-          attemptsPerGame,
-
-          passingYards,
-
-          yardsPerGame,
-
-          yardsPerAttempt,
-
-          passingTDs,
-
-          interceptions
-        };
-      })
-      .filter(player =>
-        player.team &&
-        player.player &&
-        (
-          player.attempts >= 20 ||
-          player.attemptsPerGame >= 10
-        )
-      );
+          opponent: opponentFor(team),
+          player: qb.name,
+          attemptsPerGame: qb.attemptsPerTeamGame,
+          yardsPerGame: qb.passingYards / stats.games,
+          yardsPerAttempt: qb.yardsPerAttempt,
+          passingTDs: qb.passingTDs,
+          interceptions: qb.interceptions
+        }));
+    });
   }
 
 
@@ -933,11 +865,11 @@
         player.yardsPerGame,
 
       averageLabel:
-        "Passing yards/game",
+        "Historical passing yards/team game",
 
       evidence:
         `${player.attemptsPerGame.toFixed(2)} attempts/game, ` +
-        `${player.yardsPerGame.toFixed(1)} passing yards/game, ` +
+        `${player.yardsPerGame.toFixed(1)} passing yards/team game, ` +
         `${player.yardsPerAttempt.toFixed(2)} yards/attempt, ` +
         `${player.passingTDs} passing TD, ` +
         `${player.interceptions} INT.`,

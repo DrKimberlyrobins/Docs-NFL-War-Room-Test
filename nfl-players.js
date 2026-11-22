@@ -465,6 +465,10 @@ function renderQBCompletionAnalysis(selectedTeams) {
   });
 }
 
+function getQBTeamData(teamName) {
+  return playerData?.teams?.[playerTeamCodes[teamName]];
+}
+
 function renderQBPassing() {
   const body =
     document.getElementById("qbPassingBody");
@@ -482,9 +486,7 @@ function renderQBPassing() {
   ];
 
   selectedTeams.forEach(teamName => {
-    const code = playerTeamCodes[teamName];
-    const team = playerData.teams?.[code];
-
+    const team = getQBTeamData(teamName);
     if (!team?.quarterbacks) return;
 
     team.quarterbacks.forEach(qb => {

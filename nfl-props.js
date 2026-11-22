@@ -312,10 +312,8 @@
   }
 
   function collectQuarterbacks(matchup) {
-    return rows("qbPassingBody")
-      .filter(row => row.length >= 10)
-      .map(row => {
-        const team = row[0];
+    return [matchup.away, matchup.home].flatMap(team =>
+      (getQBTeamData(team)?.quarterbacks ?? []).map(qb => {
         const opponent =
           opponentFor(team, matchup);
 
@@ -341,7 +339,7 @@
               ? "Away"
               : "Home",
 
-          player: row[1],
+          player: qb.name,
 
           targets: "",
           targetsPerGame: "",
@@ -367,14 +365,14 @@
           redZoneCarries: "",
           inside10Carries: "",
 
-          passAttempts: row[2],
-          completions: row[3],
-          completionRate: row[4],
-          passAttemptsPerGame: row[5],
-          passingYards: row[6],
-          yardsPerAttempt: row[7],
-          passingTDs: row[8],
-          interceptions: row[9],
+          passAttempts: String(qb.attempts ?? "—"),
+          completions: String(qb.completions ?? "—"),
+          completionRate: qb.completionRate == null ? "—" : qb.completionRate + "%",
+          passAttemptsPerGame: String(qb.attemptsPerTeamGame ?? "—"),
+          passingYards: String(qb.passingYards ?? "—"),
+          yardsPerAttempt: String(qb.yardsPerAttempt ?? "—"),
+          passingTDs: String(qb.passingTDs ?? "—"),
+          interceptions: String(qb.interceptions ?? "—"),
 
           opponentDefenseGames: "",
           opponent20PlusAllowed: "",
@@ -394,7 +392,8 @@
           finalOutcome: "",
           postgameNotes: ""
         };
-      });
+      })
+    );
   }
 
   async function postRecord(record) {
