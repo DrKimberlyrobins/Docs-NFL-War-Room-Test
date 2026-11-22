@@ -2755,7 +2755,8 @@
     `;
 
 
-    const gameReceipt =
+    const precedingPanel =
+      document.getElementById("docProbabilityPanel") ||
       document.getElementById(
         "receiptPanel"
       );
@@ -2768,11 +2769,11 @@
 
 
     if (
-      gameReceipt &&
-      gameReceipt.parentNode
+      precedingPanel &&
+      precedingPanel.parentNode
     ) {
 
-      gameReceipt.insertAdjacentElement(
+      precedingPanel.insertAdjacentElement(
         "afterend",
         panel
       );
