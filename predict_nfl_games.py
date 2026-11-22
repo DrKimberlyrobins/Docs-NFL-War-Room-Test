@@ -15,7 +15,7 @@ regular-season matchup in the selected window.
 import argparse
 import json
 from collections import defaultdict
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -25,7 +25,7 @@ import numpy as np
 import pandas as pd
 
 MODEL_PATH = Path("model-output/nfl_win_model.joblib")
-OUTPUT_PATH = Path("nfl-game-probabilities-2026.json")
+OUTPUT_PATH = Path("data/nfl-game-probabilities-2026.json")
 
 EXPECTED_FEATURES = [
     "off_epa_diff",
@@ -115,7 +115,7 @@ def main():
     schedule_columns = {
         "game_id", "season", "week", "gameday",
         "home_team", "away_team",
-        "home_score", "away_score", "game_type",
+        "home_score", "away_score", "game_type", "gametime",
     }
 
     pbp_columns = {
@@ -231,13 +231,32 @@ def main():
             "No NFL regular-season games in selected window."
         )
 
-    generated = datetime.now(
-        timezone.utc
-    ).isoformat()
-
-    results = []
+    kickoff_lookup = {
+        str(g.game_id): pd.Timestamp(f"{g.date.date()} {g.gametime}")
+        .tz_localize("America/New_York").tz_convert("UTC")
+        for g in schedules.itertuples() if pd.notna(g.gametime)
+    }
+    previous = json.loads(OUTPUT_PATH.read_text()) if OUTPUT_PATH.exists() else {}
+    if previous and (previous.get("model") != "pregame_logistic_v2" or previous.get("season") != 2026):
+        raise ValueError("Published archive does not match season 2026 and V2")
+    generated_at = datetime.now(timezone.utc)
+    generated = generated_at.isoformat()
+    results = {}
+    for game in previous.get("games", []):
+        game_id = game["game_id"]
+        kickoff = kickoff_lookup.get(game_id)
+        if kickoff is not None and pd.Timestamp(game["snapshot_generated_utc"]) < kickoff:
+            results[game_id] = dict(game, kickoff_utc=kickoff.isoformat())
 
     for g in upcoming.itertuples():
+        game_id = str(g.game_id)
+        kickoff = kickoff_lookup.get(game_id)
+        if (kickoff is None or generated_at >= kickoff or
+                pd.notna(g.home_score) or pd.notna(g.away_score)):
+            continue
+        if cutoff.date() > generated_at.astimezone(ZoneInfo("America/Chicago")).date():
+            raise ValueError("Feature cutoff cannot follow the snapshot date")
+
         home = str(g.home_team)
         away = str(g.away_team)
 
@@ -255,8 +274,9 @@ def main():
 
         p_away = 1 - p_home
 
-        results.append({
-            "game_id": str(g.game_id),
+        results[game_id] = {
+            "game_id": game_id,
+            "kickoff_utc": kickoff.isoformat(),
             "date": str(g.date.date()),
             "week": int(g.week),
             "away": away,
@@ -280,13 +300,8 @@ def main():
                 cutoff.date()
             ),
             "snapshot_generated_utc": generated,
-            "status": (
-                "historical_or_in_progress_check_kickoff"
-                if pd.notna(g.home_score)
-                or pd.notna(g.away_score)
-                else "scheduled_check_kickoff"
-            ),
-        })
+            "status": "pregame",
+        }
 
         print(
             f"{away} @ {home}: "
@@ -307,13 +322,12 @@ def main():
         "notes": [
             "Trained model is unchanged.",
             "No results on or after cutoff date are used.",
-            "Predictions generated after kickoff are not "
-            "valid timestamped pregame predictions.",
+            "Previously published pregame predictions are retained after kickoff.",
             "No sportsbook prices are included.",
             "No player-prop probabilities are included.",
             "Model v2 has not demonstrated a sportsbook edge.",
         ],
-        "games": results,
+        "games": sorted(results.values(), key=lambda g: (g["date"], g["game_id"])),
     }
 
     OUTPUT_PATH.write_text(

@@ -1,29 +1,11 @@
-
-/*
- DOC'S NFL WAR ROOM
- ALL-MATCHUP PROBABILITY BOARD V2
-
- - Works with every matchup in the War Room selectors
- - Preserves the seven existing provisional snapshots
- - Shows missing calculations honestly
- - Does not modify existing War Room calculations
- - Does not invent model probabilities or sportsbook prices
-*/
+"use strict";
 
 (() => {
   "use strict";
 
-  let publishedV2 = null;
-  let publishedMeta = null;
-  const snapshots = [
-    ["TEN", "IND", "IND", 69.1, 73.3],
-    ["CAR", "PHI", "CAR", 75.8, 60.6],
-    ["PIT", "TB",  "PIT", 52.8, 56.8],
-    ["BAL", "CLE", "BAL", 69.6, 61.0],
-    ["NO",  "NYG", "NYG", 54.3, 49.4],
-    ["CHI", "ATL", "CHI", 50.4, 51.7],
-    ["NYJ", "NE",  "NE",  60.8, 75.3]
-  ];
+  let publishedV2;
+  let modelError = false;
+  let renderVersion = 0;
 
   const names = {
     ARI: "Arizona Cardinals",
@@ -123,258 +105,197 @@
     return node;
   }
 
-  function metric(label, value, color) {
+  function metric(label, rows, color) {
     const block = element("div", undefined, {
-      flex: "1 1 180px",
+      flex: "1 1 220px",
       padding: "15px",
       background: "#20384f",
       borderRadius: "10px",
       minWidth: "0"
     });
-
-    block.appendChild(element("div", label, {
-      fontSize: "13px",
-      color: "#c1d2e2",
-      marginBottom: "8px"
-    }));
-
-    block.appendChild(element("div", value, {
-      fontSize: "29px",
-      fontWeight: "bold",
-      color: color
-    }));
-
+    block.appendChild(element("h4", label, { margin: "0 0 8px", color }));
+    for (const row of rows) block.appendChild(element("div", row, { marginBottom: "4px" }));
     return block;
   }
 
-  function findSnapshot(away, home) {
-    return snapshots.find(
-      row => row[0] === away && row[1] === home
-    ) || null;
+  const centralDate = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit"
+  });
+  const formatTime = new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium", timeStyle: "long", timeZone: "America/Chicago"
+  });
+
+  function competitor(event, side) {
+    return event.competitions[0].competitors.find(team => team.homeAway === side)?.team;
+  }
+
+  function gameKey(event) {
+    const schedule = window.docsNflSchedule;
+    const season = event.season?.year ?? schedule.season?.year;
+    const week = event.week?.number ?? schedule.week;
+    const away = teamCode(competitor(event, "away")?.abbreviation);
+    const home = teamCode(competitor(event, "home")?.abbreviation);
+    const nflverseCode = code => code === "JAC" ? "JAX" : code;
+    return { season, week, away, home, id: [season, String(week).padStart(2, "0"),
+      nflverseCode(away), nflverseCode(home)].join("_") };
+  }
+
+  function savedPrediction(event, key) {
+    if (publishedV2?.season !== key.season) return;
+    const kickoff = Date.parse(event.date);
+    return publishedV2.games.find(game => {
+      const generated = Date.parse(game.snapshot_generated_utc);
+      return game.game_id === key.id && game.week === key.week &&
+        teamCode(game.away) === key.away && teamCode(game.home) === key.home &&
+        game.date === centralDate.format(kickoff) &&
+        generated < kickoff && generated <= Date.now() &&
+        game.feature_cutoff_date <= centralDate.format(generated) &&
+        [game.away_win_probability, game.home_win_probability].every(
+          value => Number.isFinite(value) && value >= 0 && value <= 100
+        ) && Math.abs(game.away_win_probability + game.home_win_probability - 100) < 0.1;
+    });
+  }
+
+  function parseMoneyline(raw) {
+    const text = String(raw ?? "").trim();
+    if (/^(EVEN|EVS)$/i.test(text)) return 100;
+    const price = /^[+-]?\d+$/.test(text) ? Number(text) : NaN;
+    return Number.isSafeInteger(price) && Math.abs(price) >= 100 ? price : null;
+  }
+
+  function implied(price) {
+    return price > 0 ? 100 / (price + 100) : -price / (100 - price);
+  }
+
+  const percent = value => value.toFixed(2) + "%";
+  const signed = price => price > 0 ? "+" + price : String(price);
+
+  async function oddsRows(event, key) {
+    const response = await fetch(
+      "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=" +
+      encodeURIComponent(event.id), { cache: "no-store" }
+    );
+    if (!response.ok) throw new Error("ESPN odds request returned HTTP " + response.status);
+    const payload = await response.json();
+    const observed = Date.now();
+    const header = payload.header;
+    const sides = header?.competitions?.find(game => String(game.id) === String(event.id))?.competitors;
+    if (String(header?.id) !== String(event.id) || header.season?.year !== key.season ||
+        header.week !== key.week || !sides || ["away", "home"].some(side =>
+          sides.find(team => team.homeAway === side)?.team?.id !== competitor(event, side)?.id)) {
+      return ["Odds feed matchup, season, week, or team mapping did not match the schedule."];
+    }
+
+    const offers = (payload.pickcenter ?? []).filter(offer => offer.provider?.name);
+    if (!offers.length) return ["ESPN returned no sportsbook odds for this game."];
+
+    const missing = [];
+    for (const offer of offers) {
+      const provider = offer.provider.name;
+      const awayOdds = offer.awayTeamOdds;
+      const homeOdds = offer.homeTeamOdds;
+      if ((awayOdds?.teamId && awayOdds.teamId !== competitor(event, "away").id) ||
+          (homeOdds?.teamId && homeOdds.teamId !== competitor(event, "home").id)) {
+        missing.push(provider + " odds team IDs did not match the schedule.");
+        continue;
+      }
+      const away = parseMoneyline(offer.moneyline?.away?.close?.odds);
+      const home = parseMoneyline(offer.moneyline?.home?.close?.odds);
+      if (away === null || home === null) {
+        const teams = [away === null && names[key.away], home === null && names[key.home]].filter(Boolean);
+        missing.push(provider + " is missing a valid moneyline for " + teams.join(" and ") + ".");
+        continue;
+      }
+
+      const awayImplied = implied(away);
+      const homeImplied = implied(home);
+      const total = awayImplied + homeImplied;
+      const past = event.status?.type?.state !== "pre" || observed >= Date.parse(event.date);
+      return [
+        names[key.away] + " " + percent(100 * awayImplied / total) + " (" + signed(away) + ")",
+        names[key.home] + " " + percent(100 * homeImplied / total) + " (" + signed(home) + ")",
+        "Raw implied " + percent(100 * awayImplied) + " / " + percent(100 * homeImplied) +
+          " • Sum " + percent(100 * total),
+        provider + " via ESPN • " + (past ? "Closing prices" : "Pregame prices"),
+        "Odds captured " + formatTime.format(observed) + " • Book update time unavailable"
+      ];
+    }
+    return missing;
   }
 
   function render() {
-    const awaySelect = document.getElementById("away");
-    const homeSelect = document.getElementById("home");
+    const version = ++renderVersion;
     const output = document.getElementById("docProbabilityOutput");
-
-    if (!awaySelect || !homeSelect || !output) return;
-
-    const away = selectedCode(awaySelect);
-    const home = selectedCode(homeSelect);
-
+    if (!output) return;
+    const away = selectedCode(document.getElementById("away"));
+    const home = selectedCode(document.getElementById("home"));
     output.replaceChildren();
 
     if (!away || !home || away === home) {
-      output.appendChild(element(
-        "p",
-        "Select two different NFL teams to view their probability comparison."
-      ));
+      output.appendChild(element("p", "Select two different NFL teams to view their probability comparison."));
       return;
     }
-
-    output.appendChild(element(
-      "h3",
-      `${names[away]} @ ${names[home]}`,
-      { color: "#ffffff", marginBottom: "16px" }
-    ));
-
-    const live = publishedV2?.find(g => g.away === away && g.home === home);
-    if (live && Number.isFinite(Number(live.home_win_probability)) && Number.isFinite(Number(live.away_win_probability))) {
-      const row = element("div", undefined, {display:"flex",flexWrap:"wrap",gap:"12px",marginBottom:"14px"});
-      row.appendChild(metric("Trained V2 — " + names[away], Number(live.away_win_probability).toFixed(1)+"%", "#54e8a5"));
-      row.appendChild(metric("Trained V2 — " + names[home], Number(live.home_win_probability).toFixed(1)+"%", "#54e8a5"));
-      row.appendChild(metric("Sportsbook No-Vig", "Not available", "#ffffff"));
-      row.appendChild(metric("Improved V3", "Not trained", "#ffffff"));
-      output.appendChild(row);
-      output.appendChild(element("p", "Game date: " + live.date + " | Generated: " + (publishedMeta?.generated_utc || "unknown") + " | Feature cutoff: " + (live.feature_cutoff_date || "unknown"), {fontSize:"12px",color:"#c1d2e2"}));
-      output.appendChild(element("p", "Historical model snapshot, not live odds. Conditional on no tie. Predictions generated after kickoff are not verified pregame forecasts. No betting edge established.", {fontSize:"12px",color:"#c1d2e2"}));
-      return;
-    }
-    const saved = findSnapshot(away, home);
-
-    const row = element("div", undefined, {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: "12px",
-      marginBottom: "14px"
+    output.appendChild(element("h3", names[away] + " @ " + names[home]));
+    const schedule = window.docsNflSchedule;
+    const matches = (schedule?.games ?? []).filter(event => {
+      const key = gameKey(event);
+      return key.away === away && key.home === home;
     });
+    const event = matches.length === 1 ? matches[0] : null;
+    const key = event ? gameKey(event) : null;
+    const unavailable = !schedule ? "Loading NFL schedule…" :
+      schedule.error ? "NFL schedule feed unavailable." :
+      matches.length > 1 ? "Multiple scheduled games match these teams." :
+      "No game with these away/home teams on the current NFL slate.";
 
-    if (!saved) {
-      row.appendChild(metric(
-        "Original Model V2",
-        "Not calculated",
-        "#ffffff"
-      ));
+    const prediction = event && savedPrediction(event, key);
+    const model = prediction ? [
+      names[away] + " " + percent(prediction.away_win_probability),
+      names[home] + " " + percent(prediction.home_win_probability),
+      "Pregame snapshot " + formatTime.format(Date.parse(prediction.snapshot_generated_utc)),
+      "Feature cutoff " + prediction.feature_cutoff_date + " • Conditional on no tie"
+    ] : [!event ? unavailable : modelError ? "V2 prediction feed unavailable." :
+      !publishedV2 ? "Loading trained V2 predictions…" : "No saved pregame V2 prediction for " + key.id + "."];
 
-      row.appendChild(metric(
-        "Sportsbook No-Vig",
-        "Not available",
-        "#ffffff"
-      ));
-
-      row.appendChild(metric(
-        "Improved Model V3",
-        "Not trained",
-        "#ffffff"
-      ));
-
-      output.appendChild(row);
-
-      output.appendChild(element(
-        "div",
-        "MATCHUP READY — Waiting for model and market data",
-        {
-          padding: "12px",
-          background: "#493d20",
-          color: "#ffe2a0",
-          borderRadius: "8px",
-          fontWeight: "bold"
-        }
-      ));
-
-      output.appendChild(element(
-        "p",
-        "This matchup is recognized. We have not yet generated " +
-        "an exact trained-model prediction or imported a " +
-        "verified sportsbook price for it.",
-        { lineHeight: "1.6" }
-      ));
-
-      return;
+    if (event) {
+      output.appendChild(element("p", key.id + " • ESPN " + event.id + " • " +
+        formatTime.format(Date.parse(event.date)) + " • " + (event.status?.type?.description ?? "Scheduled")));
     }
-
-    const favored = saved[2];
-    const model = saved[3];
-    const market = saved[4];
-
-    const modelFavorite = model > 50
-      ? favored
-      : favored === away ? home : away;
-
-    const marketFavorite = market > 50
-      ? favored
-      : favored === away ? home : away;
-
-    const agreement = modelFavorite === marketFavorite;
-
-    row.appendChild(metric(
-      "Original V2 — " + names[favored],
-      model.toFixed(1) + "%",
-      "#54e8a5"
-    ));
-
-    row.appendChild(metric(
-      "Sportsbook — " + names[favored],
-      market.toFixed(1) + "%",
-      "#8cc5ff"
-    ));
-
-    row.appendChild(metric(
-      "Improved Model V3",
-      "Not trained",
-      "#ffffff"
-    ));
-
+    const row = element("div", undefined, { display: "flex", flexWrap: "wrap", gap: "12px" });
+    const odds = metric("Sportsbook No-Vig", [event ? "Loading sportsbook odds…" : unavailable], "#8cc5ff");
+    row.append(
+      metric("Original Model V2", model, "#54e8a5"),
+      odds,
+      metric("Improved Model V3", ["No verified trained artifact"], "#ffffff")
+    );
     output.appendChild(row);
 
-    output.appendChild(element(
-      "div",
-      agreement
-        ? "AGREEMENT — Both favor " + names[modelFavorite]
-        : "DISAGREEMENT — Model favors " +
-          names[modelFavorite] +
-          "; market favors " + names[marketFavorite],
-      {
-        padding: "12px",
-        background: agreement ? "#174536" : "#53401d",
-        color: agreement ? "#93ffd0" : "#ffe09a",
-        borderRadius: "8px",
-        fontWeight: "bold",
-        marginBottom: "14px"
-      }
-    ));
-
-    const table = element("table");
-    table.style.width = "100%";
-    table.style.borderCollapse = "collapse";
-
-    const header = element("tr");
-
-    ["Team", "Model V2", "Sportsbook"].forEach(label => {
-      const th = element("th", label, {
-        padding: "10px",
-        borderBottom: "1px solid #4d6579",
-        textAlign: "left"
+    if (event) {
+      oddsRows(event, key).catch(error => {
+        console.warn("Sportsbook odds unavailable:", error);
+        return ["ESPN sportsbook feed unavailable for " + key.id + "."];
+      }).then(rows => {
+        if (version === renderVersion) odds.replaceWith(metric("Sportsbook No-Vig", rows, "#8cc5ff"));
       });
-      header.appendChild(th);
-    });
-
-    table.appendChild(header);
-
-    [away, home].forEach(code => {
-      const isFavored = code === favored;
-
-      const tr = element("tr");
-      const values = [
-        names[code],
-        (isFavored ? model : 100 - model).toFixed(1) + "%",
-        (isFavored ? market : 100 - market).toFixed(1) + "%"
-      ];
-
-      values.forEach(value => {
-        tr.appendChild(element("td", value, {
-          padding: "10px",
-          borderBottom: "1px solid #344d62"
-        }));
-      });
-
-      table.appendChild(tr);
-    });
-
-    const wrapper = element("div", undefined, {
-      overflowX: "auto"
-    });
-
-    wrapper.appendChild(table);
-    output.appendChild(wrapper);
-
-    output.appendChild(element(
-      "p",
-      "Difference for " + names[favored] + ": " +
-      (model - market >= 0 ? "+" : "") +
-      (model - market).toFixed(1) +
-      " percentage points.",
-      { fontWeight: "bold" }
-    ));
-
-    output.appendChild(element(
-      "p",
-      "PROVISIONAL SNAPSHOT ONLY: Model percentages use " +
-      "approximate 2026 inputs. Sportsbook percentages are " +
-      "from saved prices, not live odds. No betting edge " +
-      "has been verified.",
-      {
-        color: "#c5d0da",
-        fontSize: "12px",
-        lineHeight: "1.6"
-      }
-    ));
+    }
   }
 
   async function loadPublishedV2() {
     try {
-      const response = await fetch("data/nfl-game-probabilities-2026.json", {cache:"no-store"});
+      const response = await fetch("data/nfl-game-probabilities-2026.json", { cache: "no-store" });
       if (!response.ok) throw new Error("HTTP " + response.status);
       const payload = await response.json();
-      if (payload.model !== "pregame_logistic_v2" || !Array.isArray(payload.games)) throw new Error("Unexpected probability schema");
-      publishedV2 = payload.games;
-      publishedMeta = payload;
-      render();
+      if (payload.model !== "pregame_logistic_v2" || !Array.isArray(payload.games)) {
+        throw new Error("Unexpected probability schema");
+      }
+      publishedV2 = payload;
     } catch (error) {
+      modelError = true;
       console.warn("Trained V2 probabilities unavailable:", error);
     }
+    render();
   }
+
   function init() {
     const away = document.getElementById("away");
     const home = document.getElementById("home");
@@ -431,12 +352,7 @@
     away.addEventListener("change", render);
     home.addEventListener("change", render);
 
-    // Refresh after existing War Room actions.
-    document.addEventListener("click", event => {
-      if (event.target.closest("button")) {
-        setTimeout(render, 0);
-      }
-    });
+    document.addEventListener("docs-nfl-schedule", render);
 
     render();
     loadPublishedV2();

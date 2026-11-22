@@ -225,6 +225,8 @@
   }
 
   async function loadSchedule() {
+    window.docsNflSchedule = null;
+    document.dispatchEvent(new Event("docs-nfl-schedule"));
     status.textContent = "Loading NFL games...";
     grid.replaceChildren();
 
@@ -244,6 +246,9 @@
           new Date(a.date) - new Date(b.date)
         );
 
+      window.docsNflSchedule = { season: data.season, week: data.week?.number, games };
+      document.dispatchEvent(new Event("docs-nfl-schedule"));
+
       if (!games.length) {
         status.textContent =
           "No games returned for the current NFL week.";
@@ -257,6 +262,8 @@
         "in kickoff order.";
 
     } catch (error) {
+      window.docsNflSchedule = { error: true };
+      document.dispatchEvent(new Event("docs-nfl-schedule"));
       status.textContent =
         "Schedule unavailable. Use the original " +
         "Away/Home selectors below.";

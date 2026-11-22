@@ -41,7 +41,7 @@ jobs:
         run: |
           mkdir -p model-output
 
-          gh run download 39142474065 \
+          gh run download 39154397462 \
             --repo "${{ github.repository }}" \
             --name nfl-trained-model-and-results \
             --dir model-output
@@ -66,6 +66,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: nfl-game-probabilities-2026
-          path: nfl-game-probabilities-2026.json
+          path: data/nfl-game-probabilities-2026.json
           retention-days: 90
           if-no-files-found: error

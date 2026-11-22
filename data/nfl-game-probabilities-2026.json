@@ -3,7 +3,7 @@
   "season": 2026,
   "generated_utc": "2026-11-21T19:22:00.009400+00:00",
   "feature_cutoff_date": "2026-11-21",
-  "games_count": 17,
+  "games_count": 18,
   "probability_definition": "Binary win probability conditional on no tie",
   "source": "nflreadpy 2026 schedules and play-by-play",
   "notes": [
@@ -15,6 +15,32 @@
     "Model v2 has not demonstrated a sportsbook edge."
   ],
   "games": [
+    {
+      "game_id": "2026_11_IND_HOU",
+      "date": "2026-11-19",
+      "week": 11,
+      "away": "IND",
+      "home": "HOU",
+      "model": "pregame_logistic_v2",
+      "home_win_probability": 69.66,
+      "away_win_probability": 30.34,
+      "model_favorite": "HOU",
+      "home_games_in_features": 8,
+      "away_games_in_features": 8,
+      "features": {
+        "off_epa_diff": 0.13605718539736406,
+        "def_epa_allowed_diff": 0.03380983728093312,
+        "points_for_diff": 5.875,
+        "points_allowed_diff": -1.75,
+        "home_games": 8.0,
+        "away_games": 8.0
+      },
+      "feature_cutoff_date": "2026-11-19",
+      "snapshot_generated_utc": "2026-11-19T20:43:09.734390+00:00",
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-20T01:15:00+00:00",
+      "snapshot_source_commit": "ec8196c93361c4870a6d1a6bdbab8cd37f3e6e13"
+    },
     {
       "game_id": "2026_11_ARI_KC",
       "date": "2026-11-22",
@@ -37,7 +63,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_BAL_CAR",
@@ -61,7 +89,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_JAX_NYG",
@@ -85,7 +115,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-22T21:25:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_LV_DEN",
@@ -109,7 +141,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-22T21:25:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_MIA_BUF",
@@ -133,7 +167,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_MIN_SF",
@@ -157,7 +193,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-23T01:20:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_NO_CHI",
@@ -181,7 +219,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_NYJ_LAC",
@@ -205,7 +245,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-22T21:05:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_PIT_PHI",
@@ -229,7 +271,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_TB_DET",
@@ -253,7 +297,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_TEN_DAL",
@@ -277,7 +323,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-22T18:00:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_11_CIN_WAS",
@@ -301,7 +349,9 @@
       },
       "feature_cutoff_date": "2026-11-21",
       "snapshot_generated_utc": "2026-11-21T19:22:00.009400+00:00",
-      "status": "scheduled_check_kickoff"
+      "status": "scheduled_check_kickoff",
+      "kickoff_utc": "2026-11-24T01:15:00+00:00",
+      "snapshot_source_commit": "b7e811b07c87343e2a75a3cead8053f844c90f72"
     },
     {
       "game_id": "2026_12_GB_LA",
