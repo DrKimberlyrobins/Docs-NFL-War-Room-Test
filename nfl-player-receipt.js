@@ -96,6 +96,8 @@
   let kambiData = null;
   let kambiLoadError = "";
   let kambiLoading = null;
+  let kambiCheckedAt = 0;
+  const KAMBI_RECHECK_MS = 5 * 60 * 1000;
 
 
   // ============================================================
@@ -359,15 +361,9 @@
   // KAMBI LOADER
   // ============================================================
 
-  async function loadKambiData() {
-
-    if (kambiData) {
-      return kambiData;
-    }
-
-    if (kambiLoading) {
-      return kambiLoading;
-    }
+  async function loadKambiData(force = false) {
+    if (kambiLoading) return kambiLoading;
+    if (!force && Date.now() - kambiCheckedAt < KAMBI_RECHECK_MS) return kambiData;
 
 
     kambiLoading =
@@ -436,9 +432,11 @@
           kambiLoadError =
             error.message;
 
-          kambiData = null;
-
-          return null;
+          return kambiData;
+        })
+        .finally(() => {
+          kambiCheckedAt = Date.now();
+          kambiLoading = null;
         });
 
 
@@ -2668,6 +2666,15 @@
     }
 
 
+    const collected = Date.parse(kambiData?.collectedAt);
+    if (Number.isFinite(collected)) {
+      const stamp = new Intl.DateTimeFormat("en-US", {
+        dateStyle: "medium", timeStyle: "short", timeZone: "America/Chicago"
+      }).format(collected);
+      const status = kambiLoadError ? " · Refresh failed. Showing last loaded snapshot." : "";
+      eventHtml += `<p role="status">Kambi snapshot collected ${escapeHtml(stamp)} CT${status}</p>`;
+    }
+
     const verifiedCount =
       targets.filter(
         target =>
@@ -2807,7 +2814,7 @@
         id="buildPlayerReceipt"
         class="player-receipt-build"
       >
-        BUILD PLAYER PROPS RECEIPT
+        REFRESH KAMBI SNAPSHOT
       </button>
 
       <div
@@ -2876,7 +2883,17 @@
 
       button.addEventListener(
         "click",
-        renderPlayerReceipt
+        async () => {
+          button.disabled = true;
+          button.textContent = "CHECKING KAMBI SNAPSHOT…";
+          try {
+            await loadKambiData(true);
+            await renderPlayerReceipt();
+          } finally {
+            button.disabled = false;
+            button.textContent = "REFRESH KAMBI SNAPSHOT";
+          }
+        }
       );
     }
 
@@ -3171,7 +3188,15 @@
 
 
     loadKambiData();
-
+    window.setInterval(async () => {
+      if (document.hidden) return;
+      const previous = kambiData?.collectedAt;
+      const previousError = kambiLoadError;
+      await loadKambiData(true);
+      if (previous !== kambiData?.collectedAt || previousError !== kambiLoadError) {
+        await renderPlayerReceipt();
+      }
+    }, KAMBI_RECHECK_MS);
 
     window.setTimeout(
       renderPlayerReceipt,

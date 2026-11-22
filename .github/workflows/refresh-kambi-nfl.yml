@@ -1,0 +1,43 @@
+name: Refresh Kambi NFL player props
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/refresh-kambi-nfl.yml
+      - scripts/kambi-player-props.js
+  schedule:
+    - cron: '7,27,47 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: kambi-nfl-player-props
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Collect Kambi player props
+        run: node scripts/kambi-player-props.js
+      - name: Validate and publish snapshot
+        run: |
+          node <<'JS'
+          const assert = require('node:assert/strict');
+          const snapshot = require('./data/kambi-player-props-2026.json');
+          assert.equal(snapshot.source, 'Kambi');
+          assert.ok(Date.now() - Date.parse(snapshot.collectedAt) < 15 * 60 * 1000);
+          assert.ok(snapshot.events.length && snapshot.props.length);
+          assert.equal(snapshot.counts.exactMatches, snapshot.props.length);
+          JS
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kambi-player-props-2026.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Refresh verified Kambi NFL player props"
+            git pull --rebase
+            git push
+          fi
